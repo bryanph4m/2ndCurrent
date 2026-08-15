@@ -1,0 +1,45 @@
+{
+  "name": "secondcurrent",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "packageManager": "pnpm@11.18.0",
+  "scripts": {
+    "dev": "pnpm --parallel --filter @secondcurrent/web --filter @secondcurrent/workflows dev",
+    "build": "pnpm -r --if-present run build",
+    "lint": "pnpm -r --if-present run lint",
+    "typecheck": "pnpm -r --if-present run typecheck",
+    "test": "pnpm -r --if-present run test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check:copy": "node scripts/check-copy.mjs",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:smoke:migrate": "node scripts/apply-migration-smoke.mjs",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:up": "docker compose up -d postgres minio minio-create-bucket",
+    "db:down": "docker compose down",
+    "admin:hash-password": "node scripts/generate-admin-password-hash.mjs",
+    "mock:linq": "tsx scripts/post-provider-fixture.ts linq",
+    "mock:stripe": "tsx scripts/post-provider-fixture.ts stripe",
+    "mock:terac": "tsx scripts/post-provider-fixture.ts terac",
+    "demo:fixtures": "node --experimental-strip-types scripts/generate-demo-fixtures.ts",
+    "demo:reset": "pnpm demo:fixtures && prisma migrate reset --force && pnpm db:seed",
+    "test:e2e": "pnpm --filter @secondcurrent/integrations exec vitest run src/flow.test.ts",
+    "test:db-smoke": "pnpm --filter @secondcurrent/db exec vitest run src/liveDatabase.test.ts",
+    "smoke:live": "tsx scripts/smoke-provider.ts"
+  },
+  "devDependencies": {
+    "prettier": "^3.4.2",
+    "typescript": "^5.9.2",
+    "eslint": "^9.18.0",
+    "@eslint/js": "^9.18.0",
+    "typescript-eslint": "^8.20.0",
+    "prisma": "^7.0.0",
+    "dotenv": "^16.4.7",
+    "tsx": "^4.19.2"
+  }
+}

@@ -1,0 +1,148 @@
+databases:
+  - name: secondcurrent-postgres
+    databaseName: secondcurrent
+    user: secondcurrent
+    plan: basic-256mb
+
+services:
+  - type: web
+    name: secondcurrent-web
+    runtime: node
+    plan: starter
+    buildCommand: pnpm install --frozen-lockfile && pnpm db:generate && pnpm --filter @secondcurrent/web build
+    preDeployCommand: pnpm db:migrate:deploy
+    startCommand: pnpm --filter @secondcurrent/web start
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: secondcurrent-postgres
+          property: connectionString
+      - key: NODE_ENV
+        value: production
+      - key: INTEGRATION_MODE
+        value: mock
+      - key: OBJECT_STORAGE_MODE
+        value: s3
+      - key: VISION_PROVIDER
+        value: fixture
+      - key: APP_BASE_URL
+        sync: false
+      - key: PHONE_LOOKUP_KEY
+        sync: false
+      - key: FIELD_ENCRYPTION_KEY
+        sync: false
+      - key: SESSION_SECRET
+        sync: false
+      - key: ADMIN_SESSION_SECRET
+        sync: false
+      - key: ADMIN_PASSWORD_HASH
+        sync: false
+      - key: LINQ_API_KEY
+        sync: false
+      - key: LINQ_WEBHOOK_SECRET
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: STRIPE_PAYMENT_LINK_URL
+        value: https://buy.stripe.com/test_5kQdR18l7c4a7Zh5lNak000
+      - key: TERAC_API_KEY
+        sync: false
+      - key: TERAC_WEBHOOK_SECRET
+        sync: false
+      - key: TERAC_PROJECT_ID
+        sync: false
+      - key: TERAC_API_BASE
+        value: https://terac.com/api/external/v2
+      - key: RENDER_API_KEY
+        sync: false
+      - key: RENDER_WORKFLOW_SLUG
+        value: secondcurrent-workflows
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: VISION_MODEL
+        sync: false
+      - key: S3_ENDPOINT
+        sync: false
+      - key: S3_REGION
+        sync: false
+      - key: S3_BUCKET
+        sync: false
+      - key: S3_ACCESS_KEY_ID
+        sync: false
+      - key: S3_SECRET_ACCESS_KEY
+        sync: false
+      - key: S3_FORCE_PATH_STYLE
+        value: "false"
+
+  - type: worker
+    name: secondcurrent-workflows
+    runtime: node
+    plan: starter
+    buildCommand: pnpm install --frozen-lockfile && pnpm db:generate && pnpm --filter @secondcurrent/workflows build
+    startCommand: pnpm --filter @secondcurrent/workflows start
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: secondcurrent-postgres
+          property: connectionString
+      - key: NODE_ENV
+        value: production
+      - key: INTEGRATION_MODE
+        value: mock
+      - key: OBJECT_STORAGE_MODE
+        value: s3
+      - key: VISION_PROVIDER
+        value: fixture
+      - key: APP_BASE_URL
+        sync: false
+      - key: PHONE_LOOKUP_KEY
+        sync: false
+      - key: FIELD_ENCRYPTION_KEY
+        sync: false
+      - key: SESSION_SECRET
+        sync: false
+      - key: ADMIN_SESSION_SECRET
+        sync: false
+      - key: ADMIN_PASSWORD_HASH
+        sync: false
+      - key: LINQ_API_KEY
+        sync: false
+      - key: LINQ_WEBHOOK_SECRET
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: STRIPE_PAYMENT_LINK_URL
+        value: https://buy.stripe.com/test_5kQdR18l7c4a7Zh5lNak000
+      - key: TERAC_API_KEY
+        sync: false
+      - key: TERAC_WEBHOOK_SECRET
+        sync: false
+      - key: TERAC_PROJECT_ID
+        sync: false
+      - key: TERAC_API_BASE
+        value: https://terac.com/api/external/v2
+      - key: RENDER_API_KEY
+        sync: false
+      - key: RENDER_WORKFLOW_SLUG
+        value: secondcurrent-workflows
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: VISION_MODEL
+        sync: false
+      - key: S3_ENDPOINT
+        sync: false
+      - key: S3_REGION
+        sync: false
+      - key: S3_BUCKET
+        sync: false
+      - key: S3_ACCESS_KEY_ID
+        sync: false
+      - key: S3_SECRET_ACCESS_KEY
+        sync: false
+      - key: S3_FORCE_PATH_STYLE
+        value: "false"
