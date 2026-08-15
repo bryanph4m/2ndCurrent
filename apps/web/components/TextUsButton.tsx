@@ -8,7 +8,7 @@ import QRCode from "qrcode";
 // separate upload channel). The QR just gets that link onto a phone that can
 // actually send a text, since desktop `sms:` links have no texting app behind them.
 const PHONE_DISPLAY = "(415) 583-7575";
-const SMS_HREF = "sms:+14155837575?&body=SELL";
+const SMS_HREF = "sms:+14155837575?body=SELL";
 
 type TextUsButtonProps = {
   className: string;

@@ -4,12 +4,16 @@
 // started, result ready, listing approval, buyer match, handoff code,
 // technical error) is added with the phase that first sends it.
 export const CONSENT_AND_PHOTO_INSTRUCTIONS_TEXT = [
+  "Thanks for texting SecondCurrent. We check your photos and text back what the item is worth and what to do with it next.",
+  "",
   "Send three photos:",
   "1. The full item",
   "2. The connector or ports",
   "3. The label or model number",
   "",
-  "Do not include private messages, account screens, or personal documents in the photos.",
+  "Use good lighting and send one item per photo. Do not include private messages, account screens, or personal documents in the photos.",
+  "",
+  "After we get all three, we will text a link to pay for the check.",
 ].join("\n");
 
 export const CHECKOUT_LINK_PREFIX = "We received your photos. Pay for the item check here: ";
