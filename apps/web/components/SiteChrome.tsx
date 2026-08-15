@@ -1,3 +1,5 @@
+import { TextUsButton } from "./TextUsButton";
+
 type SiteHeaderProps = {
   compact?: boolean;
 };
@@ -32,9 +34,7 @@ export function SiteHeader({ compact = false }: SiteHeaderProps) {
             <a href="/#what-you-get">What you get</a>
             <a href="/#why-secondcurrent">Why it matters</a>
           </nav>
-          <a className="button button-primary header-cta" href="sms:+14155837575?&body=SELL">
-            Text a photo
-          </a>
+          <TextUsButton className="button button-primary header-cta">Text a photo</TextUsButton>
         </div>
       </header>
     </>

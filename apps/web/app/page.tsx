@@ -1,5 +1,6 @@
 import { ProductGlyph } from "@/components/ProductGlyph";
 import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
+import { TextUsButton } from "@/components/TextUsButton";
 
 const examples = [
   {
@@ -53,9 +54,9 @@ export default function HomePage() {
               record, price guidance, and a safer next step.
             </p>
             <div className="hero-actions">
-              <a className="button button-primary button-large" href="sms:+14155837575?&body=SELL">
+              <TextUsButton className="button button-primary button-large">
                 Text us a photo
-              </a>
+              </TextUsButton>
               <a className="text-link" href="#how-it-works">
                 See how it works <span aria-hidden="true">↓</span>
               </a>
@@ -153,9 +154,7 @@ export default function HomePage() {
                 Start with the evidence you already have. We will ask for another photo only when it
                 can change the result.
               </p>
-              <a className="button button-light" href="sms:+14155837575?&body=SELL">
-                Start by text
-              </a>
+              <TextUsButton className="button button-light">Start by text</TextUsButton>
             </div>
             <ol className="step-list">
               <li>
@@ -233,9 +232,9 @@ export default function HomePage() {
             <p className="eyebrow">Start with one forgotten device</p>
             <h2>Give it a better next use.</h2>
           </div>
-          <a className="button button-primary button-large" href="sms:+14155837575?&body=SELL">
+          <TextUsButton className="button button-primary button-large">
             Text photos to SecondCurrent
-          </a>
+          </TextUsButton>
         </section>
       </main>
       <SiteFooter />
