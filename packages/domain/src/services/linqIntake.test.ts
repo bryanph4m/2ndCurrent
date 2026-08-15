@@ -238,6 +238,52 @@ describe("processInboundLinqEvent", () => {
     expect(recordedMessages.count).toBe(2);
   });
 
+  it("a second SELL while still waiting for photos resends the instructions instead of going silent", async () => {
+    const { ports, outbox } = createFakePorts();
+
+    await processInboundLinqEvent(baseEvent({ text: "SELL" }), crypto, ports);
+    outbox.length = 0;
+
+    const result = await processInboundLinqEvent(
+      baseEvent({ eventId: "evt_2", text: "SELL" }),
+      crypto,
+      ports,
+    );
+
+    expect(result).toMatchObject({ outcome: "SELL_STARTED" });
+    expect(outbox).toHaveLength(1);
+    expect(outbox[0]!.text).toContain("Send three photos");
+  });
+
+  it("a second SELL after photos are already complete sends an in-progress notice instead of going silent", async () => {
+    const { ports, outbox } = createFakePorts();
+
+    await processInboundLinqEvent(baseEvent({ text: "SELL" }), crypto, ports);
+    await processInboundLinqEvent(
+      baseEvent({
+        eventId: "evt_2",
+        mediaUrls: [
+          "https://example.com/1.jpg",
+          "https://example.com/2.jpg",
+          "https://example.com/3.jpg",
+        ],
+      }),
+      crypto,
+      ports,
+    );
+    outbox.length = 0;
+
+    const result = await processInboundLinqEvent(
+      baseEvent({ eventId: "evt_3", text: "SELL" }),
+      crypto,
+      ports,
+    );
+
+    expect(result).toMatchObject({ outcome: "NO_OP" });
+    expect(outbox).toHaveLength(1);
+    expect(outbox[0]!.text).toContain("already have an item check in progress");
+  });
+
   it("routes NEED into the marketplace command handler", async () => {
     const { ports, marketplaceCommands } = createFakePorts();
 

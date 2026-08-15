@@ -18,6 +18,9 @@ export const CONSENT_AND_PHOTO_INSTRUCTIONS_TEXT = [
 
 export const CHECKOUT_LINK_PREFIX = "We received your photos. Pay for the item check here: ";
 
+export const ITEM_ALREADY_IN_PROGRESS_TEXT =
+  "You already have an item check in progress. We will text you when there is an update.";
+
 export const OPT_OUT_CONFIRMATION_TEXT =
   "You will no longer receive texts from us. Reply SELL to start again.";
 

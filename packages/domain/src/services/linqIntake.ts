@@ -4,6 +4,7 @@ import type { ParsedCommand } from "../commands/parseCommand";
 import {
   CONSENT_AND_PHOTO_INSTRUCTIONS_TEXT,
   CHECKOUT_LINK_PREFIX,
+  ITEM_ALREADY_IN_PROGRESS_TEXT,
   OPT_OUT_CONFIRMATION_TEXT,
 } from "../messaging/templates";
 import { PHOTO_LABEL_ORDER } from "../schemas/media";
@@ -158,20 +159,44 @@ export async function processInboundLinqEvent(
 
   const command = parseCommand(text);
 
-  if (command.type === "SELL" && !conversation.activeItemId) {
-    const item = await ports.createItem({ ownerContactId: contact.id });
-    await ports.transitionConversation({
-      conversationId: conversation.id,
-      expectedVersion: conversation.version,
-      to: "WAITING_FOR_PHOTOS",
-      activeItemId: item.id,
-    });
+  if (command.type === "SELL") {
+    if (!conversation.activeItemId) {
+      const item = await ports.createItem({ ownerContactId: contact.id });
+      await ports.transitionConversation({
+        conversationId: conversation.id,
+        expectedVersion: conversation.version,
+        to: "WAITING_FOR_PHOTOS",
+        activeItemId: item.id,
+      });
+      await ports.enqueueOutbound({
+        contactId: contact.id,
+        idempotencyKey: `photo-instructions:${item.id}`,
+        text: CONSENT_AND_PHOTO_INSTRUCTIONS_TEXT,
+      });
+      return { outcome: "SELL_STARTED", itemId: item.id };
+    }
+
+    // A repeat SELL used to fall through to NO_OP here and send nothing,
+    // which looks identical to the pipeline being broken from the seller's
+    // side. Nothing ever clears activeItemId, so this is not a rare edge
+    // case: it is what happens to anyone who texts SELL a second time,
+    // including a seller re-sending it because their first attempt at
+    // photos did not go through.
+    if (conversation.state === "WAITING_FOR_PHOTOS") {
+      await ports.enqueueOutbound({
+        contactId: contact.id,
+        idempotencyKey: `photo-instructions-repeat:${conversation.activeItemId}:${event.eventId}`,
+        text: CONSENT_AND_PHOTO_INSTRUCTIONS_TEXT,
+      });
+      return { outcome: "SELL_STARTED", itemId: conversation.activeItemId };
+    }
+
     await ports.enqueueOutbound({
       contactId: contact.id,
-      idempotencyKey: `photo-instructions:${item.id}`,
-      text: CONSENT_AND_PHOTO_INSTRUCTIONS_TEXT,
+      idempotencyKey: `sell-in-progress:${conversation.activeItemId}:${event.eventId}`,
+      text: ITEM_ALREADY_IN_PROGRESS_TEXT,
     });
-    return { outcome: "SELL_STARTED", itemId: item.id };
+    return { outcome: "NO_OP" };
   }
 
   if (conversation.activeItemId && event.mediaUrls.length > 0) {
