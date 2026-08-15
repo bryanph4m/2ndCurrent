@@ -34,8 +34,6 @@ services:
         sync: false
       - key: LINQ_WEBHOOK_SECRET
         sync: false
-      - key: LINQ_API_V3_BASE_URL
-        value: https://api.linqapp.com
       - key: STRIPE_SECRET_KEY
         sync: false
       - key: STRIPE_WEBHOOK_SECRET
@@ -104,8 +102,6 @@ services:
         sync: false
       - key: LINQ_WEBHOOK_SECRET
         sync: false
-      - key: LINQ_API_V3_BASE_URL
-        value: https://api.linqapp.com
       - key: STRIPE_SECRET_KEY
         sync: false
       - key: STRIPE_WEBHOOK_SECRET
