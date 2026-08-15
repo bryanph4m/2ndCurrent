@@ -13,6 +13,7 @@ function createFakePorts() {
   const conversations = new Map<string, IntakeConversation>();
   const conversationIdByContact = new Map<string, string>();
   const attachedShasByItem = new Map<string, Set<string>>();
+  const attachedLabelsByItem = new Map<string, string[]>();
   const outbox: Array<{ contactId: string; idempotencyKey: string; text: string }> = [];
   const storedObjects = new Map<string, Buffer>();
   const recordedMessages = { count: 0 };
@@ -68,11 +69,16 @@ function createFakePorts() {
         metadataRemovedAt: new Date("2026-08-15T12:00:00.000Z"),
       };
     },
-    async attachMedia({ itemId, sha256 }) {
+    async attachMedia({ itemId, sha256, label }) {
       const seen = attachedShasByItem.get(itemId) ?? new Set<string>();
       const isNew = !seen.has(sha256);
       seen.add(sha256);
       attachedShasByItem.set(itemId, seen);
+      if (isNew) {
+        const labels = attachedLabelsByItem.get(itemId) ?? [];
+        labels.push(label);
+        attachedLabelsByItem.set(itemId, labels);
+      }
       return { attached: isNew, totalCount: seen.size };
     },
     async enqueueOutbound(input) {
@@ -100,6 +106,7 @@ function createFakePorts() {
     storedObjects,
     recordedMessages,
     marketplaceCommands,
+    attachedLabelsByItem,
   };
 }
 
@@ -160,10 +167,11 @@ describe("processInboundLinqEvent", () => {
     expect(outbox[0]!.text).toContain("https://checkout.example.com/");
   });
 
-  it("does not complete photo intake before three distinct photos arrive", async () => {
-    const { ports } = createFakePorts();
+  it("does not complete photo intake before three distinct photos arrive, and confirms progress instead of going silent", async () => {
+    const { ports, outbox } = createFakePorts();
 
     await processInboundLinqEvent(baseEvent({ text: "SELL" }), crypto, ports);
+    outbox.length = 0;
     const result = await processInboundLinqEvent(
       baseEvent({ mediaUrls: ["https://example.com/1.jpg"] }),
       crypto,
@@ -171,6 +179,37 @@ describe("processInboundLinqEvent", () => {
     );
 
     expect(result).toMatchObject({ outcome: "PHOTO_ATTACHED", totalCount: 1 });
+    expect(outbox).toHaveLength(1);
+    expect(outbox[0]!.text).toBe(
+      "Got 1 of 3 photos. Still need: the connector or ports, the label or model number.",
+    );
+  });
+
+  it("labels photos by running position across the item, not by index within one message", async () => {
+    const { ports, attachedLabelsByItem } = createFakePorts();
+
+    await processInboundLinqEvent(baseEvent({ text: "SELL" }), crypto, ports);
+    // An iPhone sends each picked photo as its own message, so each event
+    // here carries exactly one attachment - the same shape as three separate
+    // texts, not one text with three photos.
+    await processInboundLinqEvent(
+      baseEvent({ eventId: "evt_2", mediaUrls: ["https://example.com/1.jpg"] }),
+      crypto,
+      ports,
+    );
+    await processInboundLinqEvent(
+      baseEvent({ eventId: "evt_3", mediaUrls: ["https://example.com/2.jpg"] }),
+      crypto,
+      ports,
+    );
+    await processInboundLinqEvent(
+      baseEvent({ eventId: "evt_4", mediaUrls: ["https://example.com/3.jpg"] }),
+      crypto,
+      ports,
+    );
+
+    const [itemId] = [...attachedLabelsByItem.keys()];
+    expect(attachedLabelsByItem.get(itemId!)).toEqual(["FULL_ITEM", "CONNECTOR", "LABEL"]);
   });
 
   it("rejects more than eight photos before downloading or storing any", async () => {

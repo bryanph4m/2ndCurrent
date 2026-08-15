@@ -6,6 +6,7 @@ import {
   CHECKOUT_LINK_PREFIX,
   ITEM_ALREADY_IN_PROGRESS_TEXT,
   OPT_OUT_CONFIRMATION_TEXT,
+  buildPhotoProgressText,
 } from "../messaging/templates";
 import { PHOTO_LABEL_ORDER } from "../schemas/media";
 import type { ConversationState } from "../states/conversation";
@@ -211,7 +212,12 @@ export async function processInboundLinqEvent(
       const attachment = await ports.downloadAttachment(url);
       const normalized = await ports.normalizeAttachment(attachment);
       const sha256 = crypto.sha256(normalized.bytes);
-      const label = PHOTO_LABEL_ORDER[index] ?? "OTHER";
+      // Photos routinely arrive as separate messages (an iPhone sends each
+      // picked photo as its own MMS), so the label position must be the
+      // running count across the whole item, not the index within just this
+      // message - otherwise every one-at-a-time photo lands on index 0 and
+      // gets labeled FULL_ITEM.
+      const label = PHOTO_LABEL_ORDER[existingCount + index] ?? "OTHER";
       const objectKey = `items/${itemId}/${sha256}.webp`;
       await ports.storePrivateObject({
         objectKey,
@@ -250,6 +256,11 @@ export async function processInboundLinqEvent(
       return { outcome: "PHOTOS_COMPLETE", itemId };
     }
 
+    await ports.enqueueOutbound({
+      contactId: contact.id,
+      idempotencyKey: `photo-progress:${itemId}:${event.eventId}`,
+      text: buildPhotoProgressText(totalCount),
+    });
     return { outcome: "PHOTO_ATTACHED", totalCount };
   }
 

@@ -1,3 +1,5 @@
+import { PHOTO_LABEL_ORDER, type MediaLabel } from "../schemas/media";
+
 // Section 23.4: outbound copy lives here as tested constants, not generated
 // by a model. Only the templates Phase 3/4 actually send are defined; the
 // rest of the required set (payment received, analysis started, human review
@@ -17,6 +19,23 @@ export const CONSENT_AND_PHOTO_INSTRUCTIONS_TEXT = [
 ].join("\n");
 
 export const CHECKOUT_LINK_PREFIX = "We received your photos. Pay for the item check here: ";
+
+const PHOTO_LABEL_TEXT: Partial<Record<MediaLabel, string>> = {
+  FULL_ITEM: "the full item",
+  CONNECTOR: "the connector or ports",
+  LABEL: "the label or model number",
+};
+
+// A photo arriving as the first or second of the set has nothing to say back
+// before this (section 12.2 only sends a message once the set is complete),
+// which reads as the number being broken. Confirm what came in and what is
+// still needed instead of staying silent.
+export function buildPhotoProgressText(receivedCount: number): string {
+  const remaining = PHOTO_LABEL_ORDER.slice(receivedCount).map(
+    (label) => PHOTO_LABEL_TEXT[label] ?? label,
+  );
+  return `Got ${receivedCount} of ${PHOTO_LABEL_ORDER.length} photos. Still need: ${remaining.join(", ")}.`;
+}
 
 export const ITEM_ALREADY_IN_PROGRESS_TEXT =
   "You already have an item check in progress. We will text you when there is an update.";
