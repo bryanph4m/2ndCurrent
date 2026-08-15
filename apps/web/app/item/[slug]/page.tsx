@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
 import { findPublishedPassportBySlug } from "@secondcurrent/db";
+import { ProductGlyph } from "@/components/ProductGlyph";
+import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
 
 export const dynamic = "force-dynamic";
 
@@ -40,78 +42,153 @@ export default async function PassportPage({ params }: { params: Promise<{ slug:
   const evidence = passport.evidenceSummary as EvidenceSummaryEntry[];
 
   return (
-    <main style={{ maxWidth: 640, margin: "0 auto", padding: "2rem 1.5rem" }}>
-      <section>
-        <h1>{passport.title}</h1>
-        <p>Confidence: {confidenceLabel(passport.identityConfidence)}</p>
-      </section>
+    <>
+      <SiteHeader compact />
+      <main className="passport-page page-shell">
+        <nav className="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a>
+          <span aria-hidden="true">/</span>
+          <span>Item passport</span>
+        </nav>
 
-      <section>
-        <h2>What we could confirm</h2>
-        {knownFacts.length > 0 ? (
-          <ul>
-            {knownFacts.map((fact) => (
-              <li key={fact}>{fact}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>Nothing confirmed yet.</p>
-        )}
-      </section>
+        <section className="passport-hero">
+          <div className="passport-media">
+            <span className="passport-media-label">Evidence-backed item record</span>
+            <ProductGlyph kind="device" />
+            <div className="passport-media-proof">
+              <span className="status-dot" />
+              Published passport
+            </div>
+          </div>
 
-      <section>
-        <h2>What is still unknown</h2>
-        {unknownFacts.length > 0 ? (
-          <ul>
-            {unknownFacts.map((fact) => (
-              <li key={fact}>{fact}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>Nothing is unknown.</p>
-        )}
-      </section>
+          <div className="passport-summary">
+            <p className="eyebrow">SecondCurrent verified record</p>
+            <h1>{passport.title}</h1>
+            <div className="summary-pills">
+              <span className="confidence-pill">
+                {confidenceLabel(passport.identityConfidence)} identity confidence
+              </span>
+              <span>Condition {passport.conditionGrade}</span>
+            </div>
+            <div className="recommendation-box">
+              <span>Recommended next step</span>
+              <strong>
+                {ROUTE_LABELS[passport.recommendedRoute] ?? passport.recommendedRoute}
+              </strong>
+              {passport.suggestedPriceCents != null && (
+                <div className="suggested-price">
+                  <small>Suggested price</small>
+                  <b>${(passport.suggestedPriceCents / 100).toFixed(2)}</b>
+                </div>
+              )}
+            </div>
+            <p className="summary-note">
+              This page separates confirmed evidence from open questions so the next person can make
+              a safer decision.
+            </p>
+          </div>
+        </section>
 
-      <section>
-        <h2>Condition</h2>
-        <p>Grade {passport.conditionGrade}</p>
-      </section>
+        <section className="passport-content-grid">
+          <div className="passport-main-column">
+            <article className="passport-panel">
+              <div className="panel-heading">
+                <span className="panel-icon panel-icon-confirmed" aria-hidden="true">
+                  ✓
+                </span>
+                <div>
+                  <p className="panel-kicker">Supported by the evidence</p>
+                  <h2>What we could confirm</h2>
+                </div>
+              </div>
+              {knownFacts.length > 0 ? (
+                <ul className="fact-list confirmed-list">
+                  {knownFacts.map((fact) => (
+                    <li key={fact}>{fact}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="empty-state">Nothing confirmed yet.</p>
+              )}
+            </article>
 
-      <section>
-        <h2>Safety notes</h2>
-        <p>{SAFETY_COPY[passport.safetyStatus] ?? SAFETY_COPY.NEEDS_REVIEW}</p>
-        {passport.dataRisk === "BLOCKED" && <p>This item may still hold personal data.</p>}
-      </section>
+            <article className="passport-panel">
+              <div className="panel-heading">
+                <span className="panel-icon panel-icon-unknown" aria-hidden="true">
+                  ?
+                </span>
+                <div>
+                  <p className="panel-kicker">Not visible or not conclusive</p>
+                  <h2>What is still unknown</h2>
+                </div>
+              </div>
+              {unknownFacts.length > 0 ? (
+                <ul className="fact-list unknown-list">
+                  {unknownFacts.map((fact) => (
+                    <li key={fact}>{fact}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="empty-state">No unresolved facts were recorded.</p>
+              )}
+            </article>
 
-      <section>
-        <h2>Suggested next step</h2>
-        <p>{ROUTE_LABELS[passport.recommendedRoute] ?? passport.recommendedRoute}</p>
-        {passport.suggestedPriceCents != null && (
-          <p>Suggested price: ${(passport.suggestedPriceCents / 100).toFixed(2)}</p>
-        )}
-      </section>
+            <article className="passport-panel evidence-panel">
+              <div className="panel-heading">
+                <span className="panel-icon" aria-hidden="true">
+                  ⌕
+                </span>
+                <div>
+                  <p className="panel-kicker">Traceable inputs</p>
+                  <h2>Evidence reviewed</h2>
+                </div>
+              </div>
+              <ul className="evidence-list">
+                {evidence.map((entry) => (
+                  <li key={`${entry.label}-${entry.capturedAt}`}>
+                    <span className="evidence-type">
+                      {entry.label.replace(/_/g, " ").toLowerCase()}
+                    </span>
+                    <span>{new Date(entry.capturedAt).toLocaleDateString()}</span>
+                    <span>{entry.reviewedByPeople ? "Human reviewed" : "System reviewed"}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="review-count">
+                Reviewed by {passport.humanReviewCount}{" "}
+                {passport.humanReviewCount === 1 ? "person" : "people"}.
+              </p>
+            </article>
+          </div>
 
-      <section>
-        <h2>Evidence</h2>
-        <ul>
-          {evidence.map((entry) => (
-            <li key={`${entry.label}-${entry.capturedAt}`}>
-              {entry.label.replace(/_/g, " ").toLowerCase()} -{" "}
-              {new Date(entry.capturedAt).toLocaleDateString()}
-              {entry.reviewedByPeople ? " (reviewed by people)" : ""}
-            </li>
-          ))}
-        </ul>
-        <p>
-          Reviewed by {passport.humanReviewCount}{" "}
-          {passport.humanReviewCount === 1 ? "person" : "people"}.
-        </p>
-      </section>
+          <aside className="passport-side-column">
+            <article className="passport-panel compact-panel">
+              <p className="panel-kicker">Condition</p>
+              <div className="condition-grade">
+                <strong>{passport.conditionGrade}</strong>
+                <span>Recorded grade</span>
+              </div>
+            </article>
 
-      <section>
-        <h2>Important limits</h2>
-        <p>{passport.disclaimer}</p>
-      </section>
-    </main>
+            <article className="passport-panel compact-panel">
+              <p className="panel-kicker">Safety and data</p>
+              <h2>Before the handoff</h2>
+              <p>{SAFETY_COPY[passport.safetyStatus] ?? SAFETY_COPY.NEEDS_REVIEW}</p>
+              {passport.dataRisk === "BLOCKED" ? (
+                <div className="warning-note">This item may still hold personal data.</div>
+              ) : (
+                <div className="clear-note">No blocking data risk was recorded.</div>
+              )}
+            </article>
+
+            <article className="passport-panel compact-panel limits-panel">
+              <p className="panel-kicker">Important limits</p>
+              <p>{passport.disclaimer}</p>
+            </article>
+          </aside>
+        </section>
+      </main>
+      <SiteFooter />
+    </>
   );
 }

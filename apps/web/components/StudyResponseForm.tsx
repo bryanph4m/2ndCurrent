@@ -83,10 +83,7 @@ export function StudyResponseForm({
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}
-    >
+    <form onSubmit={handleSubmit} className="study-form">
       <fieldset>
         <legend>Which connector reference best matches the photo?</legend>
         <select
@@ -104,24 +101,26 @@ export function StudyResponseForm({
 
       <fieldset>
         <legend>Is the brand or model label readable?</legend>
-        <label>
-          <input
-            type="radio"
-            name="labelReadable"
-            checked={labelReadable}
-            onChange={() => setLabelReadable(true)}
-          />
-          Yes
-        </label>
-        <label style={{ marginLeft: "1rem" }}>
-          <input
-            type="radio"
-            name="labelReadable"
-            checked={!labelReadable}
-            onChange={() => setLabelReadable(false)}
-          />
-          No
-        </label>
+        <div className="choice-row">
+          <label className="choice-card">
+            <input
+              type="radio"
+              name="labelReadable"
+              checked={labelReadable}
+              onChange={() => setLabelReadable(true)}
+            />
+            <span>Yes</span>
+          </label>
+          <label className="choice-card">
+            <input
+              type="radio"
+              name="labelReadable"
+              checked={!labelReadable}
+              onChange={() => setLabelReadable(false)}
+            />
+            <span>No</span>
+          </label>
+        </div>
       </fieldset>
 
       <fieldset>
@@ -144,64 +143,74 @@ export function StudyResponseForm({
           Does the condition grade match the photos? (1 = not at all, 7 = matches exactly)
         </legend>
         <input
+          className="agreement-range"
           type="range"
           min={1}
           max={7}
           value={conditionAgreement}
           onChange={(event) => setConditionAgreement(Number(event.target.value))}
         />
-        <span style={{ marginLeft: "0.5rem" }}>{conditionAgreement}</span>
+        <div className="range-labels">
+          <span>Not at all</span>
+          <strong>{conditionAgreement} / 7</strong>
+          <span>Exact match</span>
+        </div>
       </fieldset>
 
       <fieldset>
         <legend>What evidence is missing before you would trust the item page?</legend>
         {MISSING_EVIDENCE_OPTIONS.map((option) => (
-          <label key={option.key} style={{ display: "block" }}>
+          <label key={option.key} className="checkbox-card">
             <input
               type="checkbox"
               checked={missingEvidence.includes(option.key)}
               onChange={() => toggleMissingEvidence(option.key)}
             />
-            {option.label}
+            <span>{option.label}</span>
           </label>
         ))}
       </fieldset>
 
       <fieldset>
         <legend>Is there a visible reason this item should not be listed?</legend>
-        <label>
-          <input
-            type="radio"
-            name="safetyConcern"
-            checked={safetyConcern}
-            onChange={() => setSafetyConcern(true)}
-          />
-          Yes
-        </label>
-        <label style={{ marginLeft: "1rem" }}>
-          <input
-            type="radio"
-            name="safetyConcern"
-            checked={!safetyConcern}
-            onChange={() => setSafetyConcern(false)}
-          />
-          No
-        </label>
+        <div className="choice-row">
+          <label className="choice-card">
+            <input
+              type="radio"
+              name="safetyConcern"
+              checked={safetyConcern}
+              onChange={() => setSafetyConcern(true)}
+            />
+            <span>Yes, I see a concern</span>
+          </label>
+          <label className="choice-card">
+            <input
+              type="radio"
+              name="safetyConcern"
+              checked={!safetyConcern}
+              onChange={() => setSafetyConcern(false)}
+            />
+            <span>No visible concern</span>
+          </label>
+        </div>
       </fieldset>
 
       <fieldset>
         <legend>Anything else worth noting? (optional)</legend>
-        <textarea
-          value={comment}
-          onChange={(event) => setComment(event.target.value)}
-          rows={3}
-          style={{ width: "100%" }}
-        />
+        <textarea value={comment} onChange={(event) => setComment(event.target.value)} rows={3} />
       </fieldset>
 
-      {error && <p role="alert">{error}</p>}
+      {error && (
+        <p className="form-error" role="alert">
+          {error}
+        </p>
+      )}
 
-      <button type="submit" disabled={submitting}>
+      <button
+        className="button button-primary button-large submit-button"
+        type="submit"
+        disabled={submitting}
+      >
         {submitting ? "Sending..." : "Submit answers"}
       </button>
     </form>

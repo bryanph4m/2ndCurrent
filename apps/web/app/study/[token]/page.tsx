@@ -8,6 +8,7 @@ import {
 } from "@secondcurrent/db";
 import { getObjectStorage } from "@/lib/storage";
 import { StudyResponseForm } from "@/components/StudyResponseForm";
+import { SiteHeader } from "@/components/SiteChrome";
 
 export const dynamic = "force-dynamic";
 
@@ -69,35 +70,56 @@ export default async function StudyPage({
   const identityOptions = modelGuess ? [modelGuess] : [];
 
   return (
-    <main style={{ maxWidth: 640, margin: "0 auto", padding: "2rem 1.5rem" }}>
-      <h1>{template.title}</h1>
-      <p>{template.description}</p>
+    <>
+      <SiteHeader compact />
+      <main className="study-page page-shell">
+        <header className="study-heading">
+          <div>
+            <p className="eyebrow">Independent evidence review</p>
+            <h1>{template.title}</h1>
+            <p>{template.description}</p>
+          </div>
+          <div className="study-time">
+            <strong>About 3 minutes</strong>
+            <span>Your answers improve the item record.</span>
+          </div>
+        </header>
 
-      <section
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "0.75rem",
-          margin: "1.5rem 0",
-        }}
-      >
-        {photos.map((photo) => (
-          <img
-            key={photo.label}
-            src={photo.url}
-            alt={photo.label.replace(/_/g, " ").toLowerCase()}
-            style={{ width: "100%", borderRadius: 4 }}
+        <section className="study-photo-panel" aria-labelledby="evidence-photos-heading">
+          <div className="study-section-heading">
+            <span>01</span>
+            <div>
+              <p className="panel-kicker">Review first</p>
+              <h2 id="evidence-photos-heading">Evidence photos</h2>
+            </div>
+          </div>
+          <div className="study-photo-grid">
+            {photos.map((photo) => (
+              <figure key={photo.label}>
+                <img src={photo.url} alt={photo.label.replace(/_/g, " ").toLowerCase()} />
+                <figcaption>{photo.label.replace(/_/g, " ").toLowerCase()}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+
+        <section className="study-form-panel" aria-labelledby="review-questions-heading">
+          <div className="study-section-heading">
+            <span>02</span>
+            <div>
+              <p className="panel-kicker">Share your judgment</p>
+              <h2 id="review-questions-heading">Review questions</h2>
+            </div>
+          </div>
+          <StudyResponseForm
+            token={token}
+            taskId={taskId}
+            submissionId={submissionId}
+            connectorOptions={connectorOptions}
+            identityOptions={identityOptions}
           />
-        ))}
-      </section>
-
-      <StudyResponseForm
-        token={token}
-        taskId={taskId}
-        submissionId={submissionId}
-        connectorOptions={connectorOptions}
-        identityOptions={identityOptions}
-      />
-    </main>
+        </section>
+      </main>
+    </>
   );
 }
