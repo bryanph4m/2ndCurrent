@@ -53,7 +53,7 @@ export default function HomePage() {
               record, price guidance, and a safer next step.
             </p>
             <div className="hero-actions">
-              <a className="button button-primary button-large" href="sms:+14155837575">
+              <a className="button button-primary button-large" href="sms:+14155837575?&body=SELL">
                 Text us a photo
               </a>
               <a className="text-link" href="#how-it-works">
@@ -153,7 +153,7 @@ export default function HomePage() {
                 Start with the evidence you already have. We will ask for another photo only when it
                 can change the result.
               </p>
-              <a className="button button-light" href="sms:+14155837575">
+              <a className="button button-light" href="sms:+14155837575?&body=SELL">
                 Start by text
               </a>
             </div>
@@ -233,7 +233,7 @@ export default function HomePage() {
             <p className="eyebrow">Start with one forgotten device</p>
             <h2>Give it a better next use.</h2>
           </div>
-          <a className="button button-primary button-large" href="sms:+14155837575">
+          <a className="button button-primary button-large" href="sms:+14155837575?&body=SELL">
             Text photos to SecondCurrent
           </a>
         </section>

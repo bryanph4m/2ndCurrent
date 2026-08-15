@@ -6,12 +6,7 @@
     "sessionUrl": false
   },
   "permissions": {
-    "deny": [
-      "Read(./.env)",
-      "Read(./.env.*)",
-      "Read(./secrets/**)",
-      "Read(./credentials/**)"
-    ],
+    "deny": ["Read(./.env)", "Read(./.env.*)", "Read(./secrets/**)", "Read(./credentials/**)"],
     "ask": []
   }
 }
