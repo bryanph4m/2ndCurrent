@@ -58,8 +58,10 @@ export function TextUsButton({ className, children }: TextUsButtonProps) {
             <p className="eyebrow">Start on your phone</p>
             <h2>Scan to text us a photo</h2>
             <p className="text-us-lede">
-              Scan this with your phone&apos;s camera. It opens a text to SecondCurrent with SELL
-              already filled in.
+              Scan this with your phone&apos;s camera, then send the text. It opens with SELL
+              already filled in, ready to send. We will text back asking for three photos. Reply
+              from your Messages app once that text arrives, not from the preview screen, so you can
+              attach photos.
             </p>
             <div className="text-us-qr">
               {qrDataUrl ? (
