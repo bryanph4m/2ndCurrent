@@ -60,7 +60,7 @@ services:
         sync: false
       - key: RENDER_WORKFLOW_SLUG
         value: secondcurrent-workflows
-      - key: ANTHROPIC_API_KEY
+      - key: OPENAI_API_KEY
         sync: false
       - key: VISION_MODEL
         sync: false
@@ -130,7 +130,7 @@ services:
         sync: false
       - key: RENDER_WORKFLOW_SLUG
         value: secondcurrent-workflows
-      - key: ANTHROPIC_API_KEY
+      - key: OPENAI_API_KEY
         sync: false
       - key: VISION_MODEL
         sync: false

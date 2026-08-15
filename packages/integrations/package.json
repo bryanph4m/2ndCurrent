@@ -11,10 +11,10 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.117.1",
     "@linqapp/sdk": "^0.37.1",
     "@renderinc/sdk": "^0.6.0",
     "@secondcurrent/domain": "workspace:*",
+    "openai": "^7.4.0",
     "sharp": "0.35.3",
     "stripe": "^22.5.0"
   },

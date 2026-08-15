@@ -9,7 +9,7 @@ export const RuntimeEnvironmentSchema = z
     DATABASE_URL: OptionalUrl,
     APP_BASE_URL: z.string().url().default("http://localhost:3000"),
     INTEGRATION_MODE: z.enum(["mock", "live"]).default("mock"),
-    VISION_PROVIDER: z.enum(["fixture", "anthropic"]).default("fixture"),
+    VISION_PROVIDER: z.enum(["fixture", "openai"]).default("fixture"),
     OBJECT_STORAGE_MODE: z.enum(["memory", "s3"]).default("memory"),
     PHONE_LOOKUP_KEY: OptionalSecret,
     FIELD_ENCRYPTION_KEY: OptionalSecret,
@@ -27,7 +27,7 @@ export const RuntimeEnvironmentSchema = z
     TERAC_API_BASE: OptionalUrl,
     RENDER_API_KEY: OptionalSecret,
     RENDER_WORKFLOW_SLUG: OptionalSecret,
-    ANTHROPIC_API_KEY: OptionalSecret,
+    OPENAI_API_KEY: OptionalSecret,
     VISION_MODEL: OptionalSecret,
     S3_ENDPOINT: OptionalUrl,
     S3_REGION: OptionalSecret,
@@ -85,8 +85,8 @@ export const RuntimeEnvironmentSchema = z
         });
       }
     }
-    if (environment.VISION_PROVIDER === "anthropic") {
-      requireKeys(["ANTHROPIC_API_KEY", "VISION_MODEL"], "when VISION_PROVIDER=anthropic");
+    if (environment.VISION_PROVIDER === "openai") {
+      requireKeys(["OPENAI_API_KEY", "VISION_MODEL"], "when VISION_PROVIDER=openai");
     }
     if (environment.OBJECT_STORAGE_MODE === "s3") {
       requireKeys(

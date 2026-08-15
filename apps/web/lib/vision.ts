@@ -1,5 +1,5 @@
 import {
-  AnthropicVisionProvider,
+  OpenAIVisionProvider,
   FixtureVisionProvider,
   type VisionProvider,
 } from "@secondcurrent/integrations";
@@ -10,21 +10,19 @@ let visionProvider: VisionProvider | undefined;
 // FixtureVisionProvider throws on an unseeded sha256 instead of guessing
 // (packages/integrations/src/vision/fixture.ts), so mock mode has nothing
 // seeded by default - it only analyzes photos a demo has explicitly seeded.
-// VISION_PROVIDER=anthropic is required to exercise the real pipeline.
+// VISION_PROVIDER=openai is required to exercise the real pipeline.
 export function getVisionProvider(): VisionProvider {
   if (visionProvider) {
     return visionProvider;
   }
 
-  if (process.env.VISION_PROVIDER === "anthropic") {
-    const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (process.env.VISION_PROVIDER === "openai") {
+    const apiKey = process.env.OPENAI_API_KEY;
     const model = process.env.VISION_MODEL;
     if (!apiKey || !model) {
-      throw new Error(
-        "ANTHROPIC_API_KEY and VISION_MODEL are required when VISION_PROVIDER=anthropic",
-      );
+      throw new Error("OPENAI_API_KEY and VISION_MODEL are required when VISION_PROVIDER=openai");
     }
-    visionProvider = new AnthropicVisionProvider({ apiKey, model, storage: getObjectStorage() });
+    visionProvider = new OpenAIVisionProvider({ apiKey, model, storage: getObjectStorage() });
   } else {
     visionProvider = new FixtureVisionProvider({});
   }

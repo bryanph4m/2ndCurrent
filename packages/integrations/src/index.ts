@@ -29,4 +29,4 @@ export {
 
 export type * from "./vision/types";
 export { FixtureVisionProvider } from "./vision/fixture";
-export { AnthropicVisionProvider } from "./vision/anthropic";
+export { OpenAIVisionProvider } from "./vision/openai";

@@ -23,9 +23,9 @@ describe("parseRuntimeEnvironment", () => {
     );
   });
 
-  it("requires model credentials when Anthropic vision is selected", () => {
-    expect(() => parseRuntimeEnvironment({ ...base, VISION_PROVIDER: "anthropic" })).toThrow(
-      "ANTHROPIC_API_KEY",
+  it("requires model credentials when OpenAI vision is selected", () => {
+    expect(() => parseRuntimeEnvironment({ ...base, VISION_PROVIDER: "openai" })).toThrow(
+      "OPENAI_API_KEY",
     );
   });
 });

@@ -1712,7 +1712,7 @@ export interface VisionProvider {
 
 Implement:
 
-- `AnthropicVisionProvider` or another selected provider
+- `OpenAIVisionProvider` or another selected provider
 - `FixtureVisionProvider`
 
 The rest of the app must not import the model SDK.
@@ -3570,7 +3570,7 @@ S3_FORCE_PATH_STYLE=true
 
 VISION_PROVIDER=fixture
 VISION_MODEL=
-ANTHROPIC_API_KEY=
+OPENAI_API_KEY=
 ```
 
 Validate variables at startup with Zod. Load separate client and server schemas. Never export server variables from a client module.

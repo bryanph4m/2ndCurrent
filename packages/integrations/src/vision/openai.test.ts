@@ -3,13 +3,13 @@ import { MemoryObjectStorage } from "../storage/memory";
 
 const { createMock } = vi.hoisted(() => ({ createMock: vi.fn() }));
 
-vi.mock("@anthropic-ai/sdk", () => ({
-  default: class MockAnthropic {
-    messages = { create: createMock };
+vi.mock("openai", () => ({
+  default: class MockOpenAI {
+    chat = { completions: { create: createMock } };
   },
 }));
 
-const { AnthropicVisionProvider } = await import("./anthropic");
+const { OpenAIVisionProvider } = await import("./openai");
 
 const validObservationJson = JSON.stringify({
   imageRole: "label",
@@ -47,14 +47,14 @@ const validObservationJson = JSON.stringify({
 });
 
 function textResponse(text: string) {
-  return { content: [{ type: "text", text }] };
+  return { choices: [{ message: { content: text } }] };
 }
 
 beforeEach(() => {
   createMock.mockReset();
 });
 
-describe("AnthropicVisionProvider", () => {
+describe("OpenAIVisionProvider", () => {
   it("parses a valid schema-matching response on the first try", async () => {
     createMock.mockResolvedValueOnce(textResponse(validObservationJson));
     const storage = new MemoryObjectStorage();
@@ -64,7 +64,7 @@ describe("AnthropicVisionProvider", () => {
       mimeType: "image/jpeg",
     });
 
-    const provider = new AnthropicVisionProvider({ apiKey: "test", model: "test-model", storage });
+    const provider = new OpenAIVisionProvider({ apiKey: "test", model: "test-model", storage });
     const observation = await provider.analyzeImage({
       objectKey: "items/1/label.jpg",
       sha256: "abc",
@@ -73,8 +73,8 @@ describe("AnthropicVisionProvider", () => {
 
     expect(observation.itemCandidates[0]?.brand).toBe("Dell");
     expect(createMock).toHaveBeenCalledTimes(1);
-    expect(createMock.mock.calls[0]![0].messages[0].content[0].source.media_type).toBe(
-      "image/webp",
+    expect(createMock.mock.calls[0]![0].messages[0].content[1].image_url.url).toContain(
+      "data:image/webp;base64,",
     );
   });
 
@@ -89,7 +89,7 @@ describe("AnthropicVisionProvider", () => {
       mimeType: "image/jpeg",
     });
 
-    const provider = new AnthropicVisionProvider({ apiKey: "test", model: "test-model", storage });
+    const provider = new OpenAIVisionProvider({ apiKey: "test", model: "test-model", storage });
     const observation = await provider.analyzeImage({
       objectKey: "items/1/label.jpg",
       sha256: "abc",
@@ -98,8 +98,7 @@ describe("AnthropicVisionProvider", () => {
 
     expect(observation.itemCandidates[0]?.brand).toBe("Dell");
     expect(createMock).toHaveBeenCalledTimes(2);
-    const secondCallMessages = createMock.mock.calls[1]![0].messages[0].content;
-    const secondCallText = secondCallMessages.find((b: { type: string }) => b.type === "text").text;
+    const secondCallText = createMock.mock.calls[1]![0].messages[0].content[0].text;
     expect(secondCallText).toContain("failed schema validation");
   });
 
@@ -114,7 +113,7 @@ describe("AnthropicVisionProvider", () => {
       mimeType: "image/jpeg",
     });
 
-    const provider = new AnthropicVisionProvider({ apiKey: "test", model: "test-model", storage });
+    const provider = new OpenAIVisionProvider({ apiKey: "test", model: "test-model", storage });
     await expect(
       provider.analyzeImage({ objectKey: "items/1/label.jpg", sha256: "abc", imageRole: "label" }),
     ).rejects.toThrow("invalid output twice");

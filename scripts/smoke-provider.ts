@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import {
-  AnthropicVisionProvider,
+  OpenAIVisionProvider,
   LinqMessagingProvider,
   RenderTaskRunner,
   S3ObjectStorage,
@@ -87,8 +87,8 @@ if (provider === "linq") {
   await objects.deleteObject(key);
   console.log("Private S3 upload, signed read, and delete passed");
 } else if (provider === "vision") {
-  const result = await new AnthropicVisionProvider({
-    apiKey: required("ANTHROPIC_API_KEY"),
+  const result = await new OpenAIVisionProvider({
+    apiKey: required("OPENAI_API_KEY"),
     model: required("VISION_MODEL"),
     storage: storage(),
   }).analyzeImage({

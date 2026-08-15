@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
 import { ImageObservationSchema, type ImageObservation } from "@secondcurrent/domain";
 import type { ObjectStorage } from "../storage/types";
 import type { AnalyzeImageInput, VisionProvider } from "./types";
@@ -12,14 +12,14 @@ const promptUrl = new URL("../../../../prompts/item-observation.v1.txt", import.
 // model has no tool access and its output is data until it parses. No
 // retries beyond the one section 31.5 requires, no streaming, no token
 // accounting.
-export class AnthropicVisionProvider implements VisionProvider {
-  private readonly client: Anthropic;
+export class OpenAIVisionProvider implements VisionProvider {
+  private readonly client: OpenAI;
   private readonly model: string;
   private readonly storage: ObjectStorage;
   private readonly instruction: string;
 
   constructor(deps: { apiKey: string; model: string; storage: ObjectStorage }) {
-    this.client = new Anthropic({ apiKey: deps.apiKey });
+    this.client = new OpenAI({ apiKey: deps.apiKey });
     this.model = deps.model;
     this.storage = deps.storage;
     this.instruction = readFileSync(promptUrl, "utf8");
@@ -51,28 +51,25 @@ export class AnthropicVisionProvider implements VisionProvider {
 
     // Intake re-encodes every accepted photo to metadata-free WebP before
     // storage, so the media type here is fixed and does not trust user input.
-    const response = await this.client.messages.create({
+    const response = await this.client.chat.completions.create({
       model: this.model,
       max_tokens: 2048,
       messages: [
         {
           role: "user",
           content: [
-            {
-              type: "image",
-              source: { type: "base64", media_type: "image/webp", data: imageBase64 },
-            },
             { type: "text", text: instruction },
+            { type: "image_url", image_url: { url: `data:image/webp;base64,${imageBase64}` } },
           ],
         },
       ],
     });
 
-    const textBlock = response.content.find((block) => block.type === "text");
-    if (!textBlock || textBlock.type !== "text") {
+    const text = response.choices[0]?.message?.content;
+    if (!text) {
       throw new Error("Vision model returned no text content");
     }
-    return textBlock.text;
+    return text;
   }
 }
 
