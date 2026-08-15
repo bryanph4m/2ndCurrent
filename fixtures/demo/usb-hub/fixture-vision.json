@@ -1,0 +1,122 @@
+{
+  "fe8c40998a247cbdf47b2078886b3be61cc0aaaa77bd44cacc88ad42e1d39345": {
+    "imageRole": "full_item",
+    "observedText": [],
+    "itemCandidates": [
+      {
+        "brand": null,
+        "model": null,
+        "category": "usb_hub",
+        "connector": "usb_c",
+        "confidence": 0.92,
+        "evidence": ["full_item fixture view"]
+      }
+    ],
+    "power": {
+      "volts": null,
+      "amps": null,
+      "watts": null,
+      "polarity": null,
+      "sourceText": null
+    },
+    "condition": { "grade": "B", "observations": [] },
+    "safetySignals": {
+      "batteryVisible": false,
+      "batterySwellingVisible": false,
+      "exposedWireVisible": false,
+      "burnMarkVisible": false,
+      "crackedMainsHousingVisible": false,
+      "liquidDamageVisible": false,
+      "unknownPowerLabel": false,
+      "notes": []
+    },
+    "dataRisk": {
+      "likelyDataBearing": false,
+      "screenShowsPersonalData": false,
+      "activationLockRisk": false,
+      "notes": []
+    },
+    "missingViews": [],
+    "uncertaintyNotes": []
+  },
+  "b2851ee62c8d15e56d53bbccbcefd0bca019ad225fea498b6ffe863b14469ff1": {
+    "imageRole": "connector",
+    "observedText": [],
+    "itemCandidates": [
+      {
+        "brand": null,
+        "model": null,
+        "category": "usb_hub",
+        "connector": "usb_c",
+        "confidence": 0.92,
+        "evidence": ["connector fixture view"]
+      }
+    ],
+    "power": {
+      "volts": null,
+      "amps": null,
+      "watts": null,
+      "polarity": null,
+      "sourceText": null
+    },
+    "condition": { "grade": "B", "observations": [] },
+    "safetySignals": {
+      "batteryVisible": false,
+      "batterySwellingVisible": false,
+      "exposedWireVisible": false,
+      "burnMarkVisible": false,
+      "crackedMainsHousingVisible": false,
+      "liquidDamageVisible": false,
+      "unknownPowerLabel": false,
+      "notes": []
+    },
+    "dataRisk": {
+      "likelyDataBearing": false,
+      "screenShowsPersonalData": false,
+      "activationLockRisk": false,
+      "notes": []
+    },
+    "missingViews": [],
+    "uncertaintyNotes": []
+  },
+  "c2f4ef83c237c6e086374e7c36ce74e9ebe85c8d464f8efa7b446bffac30cef7": {
+    "imageRole": "label",
+    "observedText": ["USB hub"],
+    "itemCandidates": [
+      {
+        "brand": null,
+        "model": null,
+        "category": "usb_hub",
+        "connector": "usb_c",
+        "confidence": 0.92,
+        "evidence": ["label fixture view"]
+      }
+    ],
+    "power": {
+      "volts": null,
+      "amps": null,
+      "watts": null,
+      "polarity": null,
+      "sourceText": null
+    },
+    "condition": { "grade": "B", "observations": [] },
+    "safetySignals": {
+      "batteryVisible": false,
+      "batterySwellingVisible": false,
+      "exposedWireVisible": false,
+      "burnMarkVisible": false,
+      "crackedMainsHousingVisible": false,
+      "liquidDamageVisible": false,
+      "unknownPowerLabel": false,
+      "notes": []
+    },
+    "dataRisk": {
+      "likelyDataBearing": false,
+      "screenShowsPersonalData": false,
+      "activationLockRisk": false,
+      "notes": []
+    },
+    "missingViews": [],
+    "uncertaintyNotes": []
+  }
+}

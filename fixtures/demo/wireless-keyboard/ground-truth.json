@@ -1,0 +1,28 @@
+{
+  "slug": "wireless-keyboard",
+  "title": "Wireless keyboard",
+  "category": "keyboard",
+  "connector": "wireless",
+  "expectedSafety": "CLEAR",
+  "expectedEvidence": "COMPLETE",
+  "expectedRoute": "RESELL",
+  "expectedDataRisk": "CLEAR",
+  "expectedPriceBandCents": [900, 2200],
+  "photos": [
+    {
+      "file": "photos/01-full_item.webp",
+      "sha256": "bd4e3256652154ef551421dab2913284f864117b57511594f33d4873e73a73d3",
+      "role": "full_item"
+    },
+    {
+      "file": "photos/02-connector.webp",
+      "sha256": "6b18d4954bf81b4ef1355efdaccc44b8819a80c4a32f62d87cd1d458353b80c2",
+      "role": "connector"
+    },
+    {
+      "file": "photos/03-label.webp",
+      "sha256": "e094412eae28c644a60b8773abc01832eed2c63fb48e6644783a9d3eea486558",
+      "role": "label"
+    }
+  ]
+}

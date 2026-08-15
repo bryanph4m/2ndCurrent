@@ -1,0 +1,28 @@
+{
+  "slug": "usb-hub",
+  "title": "USB hub",
+  "category": "usb_hub",
+  "connector": "usb_c",
+  "expectedSafety": "CLEAR",
+  "expectedEvidence": "COMPLETE",
+  "expectedRoute": "RESELL",
+  "expectedDataRisk": "CLEAR",
+  "expectedPriceBandCents": [800, 1800],
+  "photos": [
+    {
+      "file": "photos/01-full_item.webp",
+      "sha256": "fe8c40998a247cbdf47b2078886b3be61cc0aaaa77bd44cacc88ad42e1d39345",
+      "role": "full_item"
+    },
+    {
+      "file": "photos/02-connector.webp",
+      "sha256": "b2851ee62c8d15e56d53bbccbcefd0bca019ad225fea498b6ffe863b14469ff1",
+      "role": "connector"
+    },
+    {
+      "file": "photos/03-label.webp",
+      "sha256": "c2f4ef83c237c6e086374e7c36ce74e9ebe85c8d464f8efa7b446bffac30cef7",
+      "role": "label"
+    }
+  ]
+}

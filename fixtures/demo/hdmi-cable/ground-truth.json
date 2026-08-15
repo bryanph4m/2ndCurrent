@@ -1,0 +1,28 @@
+{
+  "slug": "hdmi-cable",
+  "title": "HDMI cable",
+  "category": "cable",
+  "connector": "hdmi",
+  "expectedSafety": "CLEAR",
+  "expectedEvidence": "COMPLETE",
+  "expectedRoute": "RESELL",
+  "expectedDataRisk": "CLEAR",
+  "expectedPriceBandCents": [300, 900],
+  "photos": [
+    {
+      "file": "photos/01-full_item.webp",
+      "sha256": "96756560c879a4fd2e53ea2796428f1180e042a8772eb7c3a655df86234bb2f3",
+      "role": "full_item"
+    },
+    {
+      "file": "photos/02-connector.webp",
+      "sha256": "dafb792efd781a574df6c51b1e76f042e9a1826fb09958368cd40171b003b2ad",
+      "role": "connector"
+    },
+    {
+      "file": "photos/03-label.webp",
+      "sha256": "8f6026654527853011633ea6509820ad119c2f26598f4af180ce7273ce38819c",
+      "role": "label"
+    }
+  ]
+}

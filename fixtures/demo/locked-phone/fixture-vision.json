@@ -1,0 +1,122 @@
+{
+  "4df0bd3f362f4eefd17dd09dc2dfa444f1f9a83dc83bd7db63c79a33913665cc": {
+    "imageRole": "full_item",
+    "observedText": [],
+    "itemCandidates": [
+      {
+        "brand": null,
+        "model": null,
+        "category": "phone",
+        "connector": "usb_c",
+        "confidence": 0.92,
+        "evidence": ["full_item fixture view"]
+      }
+    ],
+    "power": {
+      "volts": null,
+      "amps": null,
+      "watts": null,
+      "polarity": null,
+      "sourceText": null
+    },
+    "condition": { "grade": "B", "observations": [] },
+    "safetySignals": {
+      "batteryVisible": false,
+      "batterySwellingVisible": false,
+      "exposedWireVisible": false,
+      "burnMarkVisible": false,
+      "crackedMainsHousingVisible": false,
+      "liquidDamageVisible": false,
+      "unknownPowerLabel": false,
+      "notes": []
+    },
+    "dataRisk": {
+      "likelyDataBearing": true,
+      "screenShowsPersonalData": false,
+      "activationLockRisk": true,
+      "notes": ["No wipe evidence was provided"]
+    },
+    "missingViews": [],
+    "uncertaintyNotes": []
+  },
+  "301d5ec0e9615dc36c3fb34b4cc143ad0b10f52e10e4ec5079627f936aa083c2": {
+    "imageRole": "connector",
+    "observedText": [],
+    "itemCandidates": [
+      {
+        "brand": null,
+        "model": null,
+        "category": "phone",
+        "connector": "usb_c",
+        "confidence": 0.92,
+        "evidence": ["connector fixture view"]
+      }
+    ],
+    "power": {
+      "volts": null,
+      "amps": null,
+      "watts": null,
+      "polarity": null,
+      "sourceText": null
+    },
+    "condition": { "grade": "B", "observations": [] },
+    "safetySignals": {
+      "batteryVisible": false,
+      "batterySwellingVisible": false,
+      "exposedWireVisible": false,
+      "burnMarkVisible": false,
+      "crackedMainsHousingVisible": false,
+      "liquidDamageVisible": false,
+      "unknownPowerLabel": false,
+      "notes": []
+    },
+    "dataRisk": {
+      "likelyDataBearing": true,
+      "screenShowsPersonalData": false,
+      "activationLockRisk": true,
+      "notes": ["No wipe evidence was provided"]
+    },
+    "missingViews": [],
+    "uncertaintyNotes": []
+  },
+  "73441d5892ab8ee4ec848bfe81c0341f2f241427c17abca6e421aa6bb095a6c4": {
+    "imageRole": "label",
+    "observedText": ["Phone without wipe evidence"],
+    "itemCandidates": [
+      {
+        "brand": null,
+        "model": null,
+        "category": "phone",
+        "connector": "usb_c",
+        "confidence": 0.92,
+        "evidence": ["label fixture view"]
+      }
+    ],
+    "power": {
+      "volts": null,
+      "amps": null,
+      "watts": null,
+      "polarity": null,
+      "sourceText": null
+    },
+    "condition": { "grade": "B", "observations": [] },
+    "safetySignals": {
+      "batteryVisible": false,
+      "batterySwellingVisible": false,
+      "exposedWireVisible": false,
+      "burnMarkVisible": false,
+      "crackedMainsHousingVisible": false,
+      "liquidDamageVisible": false,
+      "unknownPowerLabel": false,
+      "notes": []
+    },
+    "dataRisk": {
+      "likelyDataBearing": true,
+      "screenShowsPersonalData": false,
+      "activationLockRisk": true,
+      "notes": ["No wipe evidence was provided"]
+    },
+    "missingViews": [],
+    "uncertaintyNotes": []
+  }
+}

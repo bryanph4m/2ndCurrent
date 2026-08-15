@@ -1,0 +1,7 @@
+{
+  "eventId": "evt_terac_1",
+  "type": "submission.status_changed",
+  "externalOpportunityId": "mock_opp_1",
+  "externalSubmissionId": "sub_1",
+  "status": "approved"
+}

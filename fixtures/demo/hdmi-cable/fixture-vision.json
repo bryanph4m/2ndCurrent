@@ -1,0 +1,122 @@
+{
+  "96756560c879a4fd2e53ea2796428f1180e042a8772eb7c3a655df86234bb2f3": {
+    "imageRole": "full_item",
+    "observedText": [],
+    "itemCandidates": [
+      {
+        "brand": null,
+        "model": null,
+        "category": "cable",
+        "connector": "hdmi",
+        "confidence": 0.92,
+        "evidence": ["full_item fixture view"]
+      }
+    ],
+    "power": {
+      "volts": null,
+      "amps": null,
+      "watts": null,
+      "polarity": null,
+      "sourceText": null
+    },
+    "condition": { "grade": "B", "observations": [] },
+    "safetySignals": {
+      "batteryVisible": false,
+      "batterySwellingVisible": false,
+      "exposedWireVisible": false,
+      "burnMarkVisible": false,
+      "crackedMainsHousingVisible": false,
+      "liquidDamageVisible": false,
+      "unknownPowerLabel": false,
+      "notes": []
+    },
+    "dataRisk": {
+      "likelyDataBearing": false,
+      "screenShowsPersonalData": false,
+      "activationLockRisk": false,
+      "notes": []
+    },
+    "missingViews": [],
+    "uncertaintyNotes": []
+  },
+  "dafb792efd781a574df6c51b1e76f042e9a1826fb09958368cd40171b003b2ad": {
+    "imageRole": "connector",
+    "observedText": [],
+    "itemCandidates": [
+      {
+        "brand": null,
+        "model": null,
+        "category": "cable",
+        "connector": "hdmi",
+        "confidence": 0.92,
+        "evidence": ["connector fixture view"]
+      }
+    ],
+    "power": {
+      "volts": null,
+      "amps": null,
+      "watts": null,
+      "polarity": null,
+      "sourceText": null
+    },
+    "condition": { "grade": "B", "observations": [] },
+    "safetySignals": {
+      "batteryVisible": false,
+      "batterySwellingVisible": false,
+      "exposedWireVisible": false,
+      "burnMarkVisible": false,
+      "crackedMainsHousingVisible": false,
+      "liquidDamageVisible": false,
+      "unknownPowerLabel": false,
+      "notes": []
+    },
+    "dataRisk": {
+      "likelyDataBearing": false,
+      "screenShowsPersonalData": false,
+      "activationLockRisk": false,
+      "notes": []
+    },
+    "missingViews": [],
+    "uncertaintyNotes": []
+  },
+  "8f6026654527853011633ea6509820ad119c2f26598f4af180ce7273ce38819c": {
+    "imageRole": "label",
+    "observedText": ["HDMI cable"],
+    "itemCandidates": [
+      {
+        "brand": null,
+        "model": null,
+        "category": "cable",
+        "connector": "hdmi",
+        "confidence": 0.92,
+        "evidence": ["label fixture view"]
+      }
+    ],
+    "power": {
+      "volts": null,
+      "amps": null,
+      "watts": null,
+      "polarity": null,
+      "sourceText": null
+    },
+    "condition": { "grade": "B", "observations": [] },
+    "safetySignals": {
+      "batteryVisible": false,
+      "batterySwellingVisible": false,
+      "exposedWireVisible": false,
+      "burnMarkVisible": false,
+      "crackedMainsHousingVisible": false,
+      "liquidDamageVisible": false,
+      "unknownPowerLabel": false,
+      "notes": []
+    },
+    "dataRisk": {
+      "likelyDataBearing": false,
+      "screenShowsPersonalData": false,
+      "activationLockRisk": false,
+      "notes": []
+    },
+    "missingViews": [],
+    "uncertaintyNotes": []
+  }
+}

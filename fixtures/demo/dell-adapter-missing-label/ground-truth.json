@@ -1,0 +1,28 @@
+{
+  "slug": "dell-adapter-missing-label",
+  "title": "Dell adapter with missing label",
+  "category": "laptop_power_adapter",
+  "connector": "usb_c",
+  "expectedSafety": "NEEDS_REVIEW",
+  "expectedEvidence": "REQUEST_MORE",
+  "expectedRoute": "NEEDS_MORE_EVIDENCE",
+  "expectedDataRisk": "CLEAR",
+  "expectedPriceBandCents": null,
+  "photos": [
+    {
+      "file": "photos/01-full_item.webp",
+      "sha256": "69f1ae1dfd72a2f7df2d92cf5236c88dfd65771523363b2824469c5212e1e666",
+      "role": "full_item"
+    },
+    {
+      "file": "photos/02-connector.webp",
+      "sha256": "21564c5a1ed8bbaab4da8c8381bc3e5ba5e4e982f62af884094dce2def0628fd",
+      "role": "connector"
+    },
+    {
+      "file": "photos/03-label.webp",
+      "sha256": "e2caa1a55b30603a6f02f00c946472f39bf89e92cc4ddfc0bac65d9ebf592ffa",
+      "role": "label"
+    }
+  ]
+}

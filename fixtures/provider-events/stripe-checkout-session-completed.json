@@ -1,0 +1,9 @@
+{
+  "eventId": "evt_stripe_1",
+  "type": "checkout.session.completed",
+  "orderId": "order_1",
+  "checkoutSessionId": "mock_co_1",
+  "paymentId": "pi_1",
+  "amountCents": 5000,
+  "currency": "USD"
+}

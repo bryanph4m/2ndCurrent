@@ -1,0 +1,42 @@
+{
+  "version": "item-verification.v1",
+  "title": "Review an electronics item",
+  "description": "Look at the photos and answer six short questions.",
+  "durationMinutes": 5,
+  "questions": [
+    {
+      "key": "connectorChoice",
+      "text": "Which connector reference best matches the photo?",
+      "type": "categorical",
+      "randomizeOrder": true
+    },
+    {
+      "key": "labelReadable",
+      "text": "Is the brand or model label readable?",
+      "type": "boolean"
+    },
+    {
+      "key": "identityCandidate",
+      "text": "Which candidate identity is best supported?",
+      "type": "categorical",
+      "randomizeOrder": true
+    },
+    {
+      "key": "conditionAgreement",
+      "text": "Does the condition grade match the photos?",
+      "type": "rating",
+      "min": 1,
+      "max": 7
+    },
+    {
+      "key": "missingEvidence",
+      "text": "What evidence is missing before you would trust the item page?",
+      "type": "multi_select"
+    },
+    {
+      "key": "safetyConcern",
+      "text": "Is there a visible reason this item should not be listed?",
+      "type": "boolean"
+    }
+  ]
+}

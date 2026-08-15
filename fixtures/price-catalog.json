@@ -1,0 +1,82 @@
+[
+  {
+    "category": "power_adapter",
+    "brand": "Dell",
+    "connector": "usb_c",
+    "lowCents": 800,
+    "midCents": 1200,
+    "highCents": 1600,
+    "sourceNote": "Seeded event catalog",
+    "updatedAt": "2026-08-14"
+  },
+  {
+    "category": "power_adapter",
+    "brand": "Apple",
+    "connector": "usb_c",
+    "lowCents": 1000,
+    "midCents": 1500,
+    "highCents": 2000,
+    "sourceNote": "Seeded event catalog",
+    "updatedAt": "2026-08-14"
+  },
+  {
+    "category": "power_adapter",
+    "brand": null,
+    "connector": "usb_c",
+    "lowCents": 400,
+    "midCents": 700,
+    "highCents": 1000,
+    "sourceNote": "Seeded event catalog, generic USB-C adapter",
+    "updatedAt": "2026-08-14"
+  },
+  {
+    "category": "cable",
+    "brand": null,
+    "connector": "usb_c",
+    "lowCents": 200,
+    "midCents": 400,
+    "highCents": 600,
+    "sourceNote": "Seeded event catalog",
+    "updatedAt": "2026-08-14"
+  },
+  {
+    "category": "mouse",
+    "brand": "Logitech",
+    "connector": null,
+    "lowCents": 500,
+    "midCents": 900,
+    "highCents": 1400,
+    "sourceNote": "Seeded event catalog",
+    "updatedAt": "2026-08-14"
+  },
+  {
+    "category": "keyboard",
+    "brand": null,
+    "connector": null,
+    "lowCents": 600,
+    "midCents": 1000,
+    "highCents": 1600,
+    "sourceNote": "Seeded event catalog, generic keyboard",
+    "updatedAt": "2026-08-14"
+  },
+  {
+    "category": "usb_hub",
+    "brand": null,
+    "connector": "usb_c",
+    "lowCents": 500,
+    "midCents": 900,
+    "highCents": 1300,
+    "sourceNote": "Seeded event catalog",
+    "updatedAt": "2026-08-14"
+  },
+  {
+    "category": "headphones",
+    "brand": null,
+    "connector": null,
+    "lowCents": 700,
+    "midCents": 1300,
+    "highCents": 2200,
+    "sourceNote": "Seeded event catalog, generic headphones",
+    "updatedAt": "2026-08-14"
+  }
+]

@@ -1,0 +1,122 @@
+{
+  "50f0d6f5aa04cdb89510e012bcef346641db51fe718530ffb61f95efd95c5ce1": {
+    "imageRole": "full_item",
+    "observedText": [],
+    "itemCandidates": [
+      {
+        "brand": null,
+        "model": null,
+        "category": "cable",
+        "connector": "usb_c",
+        "confidence": 0.92,
+        "evidence": ["full_item fixture view"]
+      }
+    ],
+    "power": {
+      "volts": null,
+      "amps": null,
+      "watts": null,
+      "polarity": null,
+      "sourceText": null
+    },
+    "condition": { "grade": "B", "observations": [] },
+    "safetySignals": {
+      "batteryVisible": false,
+      "batterySwellingVisible": false,
+      "exposedWireVisible": false,
+      "burnMarkVisible": false,
+      "crackedMainsHousingVisible": false,
+      "liquidDamageVisible": false,
+      "unknownPowerLabel": false,
+      "notes": []
+    },
+    "dataRisk": {
+      "likelyDataBearing": false,
+      "screenShowsPersonalData": false,
+      "activationLockRisk": false,
+      "notes": []
+    },
+    "missingViews": [],
+    "uncertaintyNotes": []
+  },
+  "0351fd8103f9486f6cc25089918dbc7b7dcc009fb7e7a7e3a938362b5da9b160": {
+    "imageRole": "connector",
+    "observedText": [],
+    "itemCandidates": [
+      {
+        "brand": null,
+        "model": null,
+        "category": "cable",
+        "connector": "usb_c",
+        "confidence": 0.92,
+        "evidence": ["connector fixture view"]
+      }
+    ],
+    "power": {
+      "volts": null,
+      "amps": null,
+      "watts": null,
+      "polarity": null,
+      "sourceText": null
+    },
+    "condition": { "grade": "B", "observations": [] },
+    "safetySignals": {
+      "batteryVisible": false,
+      "batterySwellingVisible": false,
+      "exposedWireVisible": false,
+      "burnMarkVisible": false,
+      "crackedMainsHousingVisible": false,
+      "liquidDamageVisible": false,
+      "unknownPowerLabel": false,
+      "notes": []
+    },
+    "dataRisk": {
+      "likelyDataBearing": false,
+      "screenShowsPersonalData": false,
+      "activationLockRisk": false,
+      "notes": []
+    },
+    "missingViews": [],
+    "uncertaintyNotes": []
+  },
+  "bde2247e7908b1b4ffc6e06e8e6d80cce9f1b5773183e3d1d7c60666cea35a9e": {
+    "imageRole": "label",
+    "observedText": ["USB-C cable"],
+    "itemCandidates": [
+      {
+        "brand": null,
+        "model": null,
+        "category": "cable",
+        "connector": "usb_c",
+        "confidence": 0.92,
+        "evidence": ["label fixture view"]
+      }
+    ],
+    "power": {
+      "volts": null,
+      "amps": null,
+      "watts": null,
+      "polarity": null,
+      "sourceText": null
+    },
+    "condition": { "grade": "B", "observations": [] },
+    "safetySignals": {
+      "batteryVisible": false,
+      "batterySwellingVisible": false,
+      "exposedWireVisible": false,
+      "burnMarkVisible": false,
+      "crackedMainsHousingVisible": false,
+      "liquidDamageVisible": false,
+      "unknownPowerLabel": false,
+      "notes": []
+    },
+    "dataRisk": {
+      "likelyDataBearing": false,
+      "screenShowsPersonalData": false,
+      "activationLockRisk": false,
+      "notes": []
+    },
+    "missingViews": [],
+    "uncertaintyNotes": []
+  }
+}

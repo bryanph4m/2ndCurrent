@@ -1,0 +1,28 @@
+{
+  "slug": "locked-phone",
+  "title": "Phone without wipe evidence",
+  "category": "phone",
+  "connector": "usb_c",
+  "expectedSafety": "CLEAR",
+  "expectedEvidence": "COMPLETE",
+  "expectedRoute": "DO_NOT_LIST",
+  "expectedDataRisk": "BLOCK",
+  "expectedPriceBandCents": null,
+  "photos": [
+    {
+      "file": "photos/01-full_item.webp",
+      "sha256": "4df0bd3f362f4eefd17dd09dc2dfa444f1f9a83dc83bd7db63c79a33913665cc",
+      "role": "full_item"
+    },
+    {
+      "file": "photos/02-connector.webp",
+      "sha256": "301d5ec0e9615dc36c3fb34b4cc143ad0b10f52e10e4ec5079627f936aa083c2",
+      "role": "connector"
+    },
+    {
+      "file": "photos/03-label.webp",
+      "sha256": "73441d5892ab8ee4ec848bfe81c0341f2f241427c17abca6e421aa6bb095a6c4",
+      "role": "label"
+    }
+  ]
+}

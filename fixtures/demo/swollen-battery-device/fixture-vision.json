@@ -1,0 +1,122 @@
+{
+  "ee6326288268d0f22075f8986aabca1f597a63d2d3f611ba8c1e1341e44c8068": {
+    "imageRole": "full_item",
+    "observedText": [],
+    "itemCandidates": [
+      {
+        "brand": null,
+        "model": null,
+        "category": "battery_device",
+        "connector": null,
+        "confidence": 0.92,
+        "evidence": ["full_item fixture view"]
+      }
+    ],
+    "power": {
+      "volts": null,
+      "amps": null,
+      "watts": null,
+      "polarity": null,
+      "sourceText": null
+    },
+    "condition": { "grade": "D", "observations": [] },
+    "safetySignals": {
+      "batteryVisible": true,
+      "batterySwellingVisible": true,
+      "exposedWireVisible": false,
+      "burnMarkVisible": false,
+      "crackedMainsHousingVisible": false,
+      "liquidDamageVisible": false,
+      "unknownPowerLabel": false,
+      "notes": ["Visible battery swelling"]
+    },
+    "dataRisk": {
+      "likelyDataBearing": false,
+      "screenShowsPersonalData": false,
+      "activationLockRisk": false,
+      "notes": []
+    },
+    "missingViews": [],
+    "uncertaintyNotes": []
+  },
+  "cf751d74062ae6c5e1a48307104fc2ccabff82e02652a4eb4064ba87eeb83df3": {
+    "imageRole": "connector",
+    "observedText": [],
+    "itemCandidates": [
+      {
+        "brand": null,
+        "model": null,
+        "category": "battery_device",
+        "connector": null,
+        "confidence": 0.92,
+        "evidence": ["connector fixture view"]
+      }
+    ],
+    "power": {
+      "volts": null,
+      "amps": null,
+      "watts": null,
+      "polarity": null,
+      "sourceText": null
+    },
+    "condition": { "grade": "D", "observations": [] },
+    "safetySignals": {
+      "batteryVisible": true,
+      "batterySwellingVisible": true,
+      "exposedWireVisible": false,
+      "burnMarkVisible": false,
+      "crackedMainsHousingVisible": false,
+      "liquidDamageVisible": false,
+      "unknownPowerLabel": false,
+      "notes": ["Visible battery swelling"]
+    },
+    "dataRisk": {
+      "likelyDataBearing": false,
+      "screenShowsPersonalData": false,
+      "activationLockRisk": false,
+      "notes": []
+    },
+    "missingViews": [],
+    "uncertaintyNotes": []
+  },
+  "5fa38d827361d10fa8342a68a2ec801815ce1e9d4a8dec4e762fd1e86f6fb862": {
+    "imageRole": "label",
+    "observedText": ["Battery device with visible swelling"],
+    "itemCandidates": [
+      {
+        "brand": null,
+        "model": null,
+        "category": "battery_device",
+        "connector": null,
+        "confidence": 0.92,
+        "evidence": ["label fixture view"]
+      }
+    ],
+    "power": {
+      "volts": null,
+      "amps": null,
+      "watts": null,
+      "polarity": null,
+      "sourceText": null
+    },
+    "condition": { "grade": "D", "observations": [] },
+    "safetySignals": {
+      "batteryVisible": true,
+      "batterySwellingVisible": true,
+      "exposedWireVisible": false,
+      "burnMarkVisible": false,
+      "crackedMainsHousingVisible": false,
+      "liquidDamageVisible": false,
+      "unknownPowerLabel": false,
+      "notes": ["Visible battery swelling"]
+    },
+    "dataRisk": {
+      "likelyDataBearing": false,
+      "screenShowsPersonalData": false,
+      "activationLockRisk": false,
+      "notes": []
+    },
+    "missingViews": [],
+    "uncertaintyNotes": []
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "slug": "headphones",
+  "title": "Headphones",
+  "category": "headphones",
+  "connector": "3.5mm",
+  "expectedSafety": "CLEAR",
+  "expectedEvidence": "COMPLETE",
+  "expectedRoute": "RESELL",
+  "expectedDataRisk": "CLEAR",
+  "expectedPriceBandCents": [1000, 3000],
+  "photos": [
+    {
+      "file": "photos/01-full_item.webp",
+      "sha256": "a58bc6a7d4bd22fd1425a21e4f833f7e5e127911debf1f9a034d9ae0a5d56745",
+      "role": "full_item"
+    },
+    {
+      "file": "photos/02-connector.webp",
+      "sha256": "ec51e869af9b156d56a84e77a13201f5e543896227d91d0aa92441be61a16668",
+      "role": "connector"
+    },
+    {
+      "file": "photos/03-label.webp",
+      "sha256": "ff0919a5aca0df4a627ccf95afc5dfed91630d1d622f63afedc85dd9f1cbc1a9",
+      "role": "label"
+    }
+  ]
+}

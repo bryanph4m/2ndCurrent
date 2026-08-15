@@ -1,0 +1,28 @@
+{
+  "slug": "usb-c-cable",
+  "title": "USB-C cable",
+  "category": "cable",
+  "connector": "usb_c",
+  "expectedSafety": "CLEAR",
+  "expectedEvidence": "COMPLETE",
+  "expectedRoute": "RESELL",
+  "expectedDataRisk": "CLEAR",
+  "expectedPriceBandCents": [300, 800],
+  "photos": [
+    {
+      "file": "photos/01-full_item.webp",
+      "sha256": "50f0d6f5aa04cdb89510e012bcef346641db51fe718530ffb61f95efd95c5ce1",
+      "role": "full_item"
+    },
+    {
+      "file": "photos/02-connector.webp",
+      "sha256": "0351fd8103f9486f6cc25089918dbc7b7dcc009fb7e7a7e3a938362b5da9b160",
+      "role": "connector"
+    },
+    {
+      "file": "photos/03-label.webp",
+      "sha256": "bde2247e7908b1b4ffc6e06e8e6d80cce9f1b5773183e3d1d7c60666cea35a9e",
+      "role": "label"
+    }
+  ]
+}

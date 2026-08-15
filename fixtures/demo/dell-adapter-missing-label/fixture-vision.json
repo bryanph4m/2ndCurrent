@@ -1,0 +1,122 @@
+{
+  "69f1ae1dfd72a2f7df2d92cf5236c88dfd65771523363b2824469c5212e1e666": {
+    "imageRole": "full_item",
+    "observedText": [],
+    "itemCandidates": [
+      {
+        "brand": "Dell",
+        "model": null,
+        "category": "laptop_power_adapter",
+        "connector": "usb_c",
+        "confidence": 0.55,
+        "evidence": ["full_item fixture view"]
+      }
+    ],
+    "power": {
+      "volts": null,
+      "amps": null,
+      "watts": null,
+      "polarity": null,
+      "sourceText": null
+    },
+    "condition": { "grade": "B", "observations": [] },
+    "safetySignals": {
+      "batteryVisible": false,
+      "batterySwellingVisible": false,
+      "exposedWireVisible": false,
+      "burnMarkVisible": false,
+      "crackedMainsHousingVisible": false,
+      "liquidDamageVisible": false,
+      "unknownPowerLabel": true,
+      "notes": []
+    },
+    "dataRisk": {
+      "likelyDataBearing": false,
+      "screenShowsPersonalData": false,
+      "activationLockRisk": false,
+      "notes": []
+    },
+    "missingViews": ["label"],
+    "uncertaintyNotes": ["Identity needs more evidence"]
+  },
+  "21564c5a1ed8bbaab4da8c8381bc3e5ba5e4e982f62af884094dce2def0628fd": {
+    "imageRole": "connector",
+    "observedText": [],
+    "itemCandidates": [
+      {
+        "brand": "Dell",
+        "model": null,
+        "category": "laptop_power_adapter",
+        "connector": "usb_c",
+        "confidence": 0.55,
+        "evidence": ["connector fixture view"]
+      }
+    ],
+    "power": {
+      "volts": null,
+      "amps": null,
+      "watts": null,
+      "polarity": null,
+      "sourceText": null
+    },
+    "condition": { "grade": "B", "observations": [] },
+    "safetySignals": {
+      "batteryVisible": false,
+      "batterySwellingVisible": false,
+      "exposedWireVisible": false,
+      "burnMarkVisible": false,
+      "crackedMainsHousingVisible": false,
+      "liquidDamageVisible": false,
+      "unknownPowerLabel": true,
+      "notes": []
+    },
+    "dataRisk": {
+      "likelyDataBearing": false,
+      "screenShowsPersonalData": false,
+      "activationLockRisk": false,
+      "notes": []
+    },
+    "missingViews": ["label"],
+    "uncertaintyNotes": ["Identity needs more evidence"]
+  },
+  "e2caa1a55b30603a6f02f00c946472f39bf89e92cc4ddfc0bac65d9ebf592ffa": {
+    "imageRole": "label",
+    "observedText": [],
+    "itemCandidates": [
+      {
+        "brand": "Dell",
+        "model": null,
+        "category": "laptop_power_adapter",
+        "connector": "usb_c",
+        "confidence": 0.55,
+        "evidence": ["label fixture view"]
+      }
+    ],
+    "power": {
+      "volts": null,
+      "amps": null,
+      "watts": null,
+      "polarity": null,
+      "sourceText": null
+    },
+    "condition": { "grade": "B", "observations": [] },
+    "safetySignals": {
+      "batteryVisible": false,
+      "batterySwellingVisible": false,
+      "exposedWireVisible": false,
+      "burnMarkVisible": false,
+      "crackedMainsHousingVisible": false,
+      "liquidDamageVisible": false,
+      "unknownPowerLabel": true,
+      "notes": []
+    },
+    "dataRisk": {
+      "likelyDataBearing": false,
+      "screenShowsPersonalData": false,
+      "activationLockRisk": false,
+      "notes": []
+    },
+    "missingViews": ["label"],
+    "uncertaintyNotes": ["Identity needs more evidence"]
+  }
+}

@@ -1,0 +1,20 @@
+Read the full architecture plan and CLAUDE.md before editing files.
+
+Build only Phase 0 and Phase 1 first. Do not start later phases yet.
+
+Follow these rules:
+- Do not run git commit or git push.
+- Do not add any coauthor or tool attribution.
+- Do not change Git configuration or Git identity.
+- Do not read secret or environment files.
+- Do not use an em dash in any source-controlled text.
+- Use the exact plain public copy from the plan.
+- Keep provider code behind interfaces.
+- Use strict TypeScript and Zod at runtime boundaries.
+- Add tests as each domain rule is implemented.
+
+At the end:
+1. Run format check, lint, copy check, typecheck, tests, and build.
+2. Fix every failure.
+3. Summarize files changed, tests added, and any assumption that differs from the plan.
+4. Stop. Do not continue to Phase 2 until asked.

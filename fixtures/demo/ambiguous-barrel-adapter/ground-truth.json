@@ -1,0 +1,28 @@
+{
+  "slug": "ambiguous-barrel-adapter",
+  "title": "Ambiguous barrel connector adapter",
+  "category": "laptop_power_adapter",
+  "connector": "barrel",
+  "expectedSafety": "NEEDS_REVIEW",
+  "expectedEvidence": "REQUEST_MORE",
+  "expectedRoute": "NEEDS_MORE_EVIDENCE",
+  "expectedDataRisk": "CLEAR",
+  "expectedPriceBandCents": null,
+  "photos": [
+    {
+      "file": "photos/01-full_item.webp",
+      "sha256": "55da7949fcf8a5d5524a32782a6e640a44038fad22414adbc9e2d7ef9bbd5898",
+      "role": "full_item"
+    },
+    {
+      "file": "photos/02-connector.webp",
+      "sha256": "3a78bc3ce86fdcc74a58d4260459b9fb45ee9914c1078b27f7c81e65724ff1ac",
+      "role": "connector"
+    },
+    {
+      "file": "photos/03-label.webp",
+      "sha256": "f60e09294df2ea4952beec0e2f9414ecdbd79d70fc01b20d1e6d41ae33bd3d31",
+      "role": "label"
+    }
+  ]
+}

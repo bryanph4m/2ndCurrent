@@ -1,0 +1,28 @@
+{
+  "slug": "dell-65w-adapter",
+  "title": "Dell 65W USB-C power adapter",
+  "category": "laptop_power_adapter",
+  "connector": "usb_c",
+  "expectedSafety": "CLEAR",
+  "expectedEvidence": "COMPLETE",
+  "expectedRoute": "RESELL",
+  "expectedDataRisk": "CLEAR",
+  "expectedPriceBandCents": [1200, 2200],
+  "photos": [
+    {
+      "file": "photos/01-full_item.webp",
+      "sha256": "79d71daf98c10f1669b607e6cc84bceaebd9789de11466807e2a62fb12a62b54",
+      "role": "full_item"
+    },
+    {
+      "file": "photos/02-connector.webp",
+      "sha256": "44f2ad26f735da5c8e277600293036ac3d35a2a4a137482ca871ce0d76a23d96",
+      "role": "connector"
+    },
+    {
+      "file": "photos/03-label.webp",
+      "sha256": "4a23548134e2333851ca4ab3475fcf4d578832eea082b96f34cc27e32b4c2763",
+      "role": "label"
+    }
+  ]
+}

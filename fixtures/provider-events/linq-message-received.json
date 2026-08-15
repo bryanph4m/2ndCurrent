@@ -1,0 +1,8 @@
+{
+  "eventId": "evt_linq_1",
+  "type": "message.received",
+  "chatId": "chat_1",
+  "fromPhone": "+15551234567",
+  "text": "SELL",
+  "mediaUrls": []
+}

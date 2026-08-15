@@ -1,0 +1,28 @@
+{
+  "slug": "wired-mouse",
+  "title": "Wired mouse",
+  "category": "mouse",
+  "connector": "usb_a",
+  "expectedSafety": "CLEAR",
+  "expectedEvidence": "COMPLETE",
+  "expectedRoute": "DONATE",
+  "expectedDataRisk": "CLEAR",
+  "expectedPriceBandCents": [300, 900],
+  "photos": [
+    {
+      "file": "photos/01-full_item.webp",
+      "sha256": "a6b15ccfe9c69c488d2cb41854cf40586a1e0a7401738b1ebf7c3f01f61f1fde",
+      "role": "full_item"
+    },
+    {
+      "file": "photos/02-connector.webp",
+      "sha256": "da0e5ec27044e81ce87cd94ed15993498d2561c67065767b7d6c0906a5b514ca",
+      "role": "connector"
+    },
+    {
+      "file": "photos/03-label.webp",
+      "sha256": "3fbfa51714c08d83b5752ee5c9a994753f500ba46027bccc336e18961c46d4ae",
+      "role": "label"
+    }
+  ]
+}

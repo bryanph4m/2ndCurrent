@@ -1,0 +1,122 @@
+{
+  "79d71daf98c10f1669b607e6cc84bceaebd9789de11466807e2a62fb12a62b54": {
+    "imageRole": "full_item",
+    "observedText": [],
+    "itemCandidates": [
+      {
+        "brand": "Dell",
+        "model": null,
+        "category": "laptop_power_adapter",
+        "connector": "usb_c",
+        "confidence": 0.92,
+        "evidence": ["full_item fixture view"]
+      }
+    ],
+    "power": {
+      "volts": 20,
+      "amps": 3.25,
+      "watts": 65,
+      "polarity": null,
+      "sourceText": "20V 3.25A 65W"
+    },
+    "condition": { "grade": "B", "observations": [] },
+    "safetySignals": {
+      "batteryVisible": false,
+      "batterySwellingVisible": false,
+      "exposedWireVisible": false,
+      "burnMarkVisible": false,
+      "crackedMainsHousingVisible": false,
+      "liquidDamageVisible": false,
+      "unknownPowerLabel": false,
+      "notes": []
+    },
+    "dataRisk": {
+      "likelyDataBearing": false,
+      "screenShowsPersonalData": false,
+      "activationLockRisk": false,
+      "notes": []
+    },
+    "missingViews": [],
+    "uncertaintyNotes": []
+  },
+  "44f2ad26f735da5c8e277600293036ac3d35a2a4a137482ca871ce0d76a23d96": {
+    "imageRole": "connector",
+    "observedText": [],
+    "itemCandidates": [
+      {
+        "brand": "Dell",
+        "model": null,
+        "category": "laptop_power_adapter",
+        "connector": "usb_c",
+        "confidence": 0.92,
+        "evidence": ["connector fixture view"]
+      }
+    ],
+    "power": {
+      "volts": 20,
+      "amps": 3.25,
+      "watts": 65,
+      "polarity": null,
+      "sourceText": "20V 3.25A 65W"
+    },
+    "condition": { "grade": "B", "observations": [] },
+    "safetySignals": {
+      "batteryVisible": false,
+      "batterySwellingVisible": false,
+      "exposedWireVisible": false,
+      "burnMarkVisible": false,
+      "crackedMainsHousingVisible": false,
+      "liquidDamageVisible": false,
+      "unknownPowerLabel": false,
+      "notes": []
+    },
+    "dataRisk": {
+      "likelyDataBearing": false,
+      "screenShowsPersonalData": false,
+      "activationLockRisk": false,
+      "notes": []
+    },
+    "missingViews": [],
+    "uncertaintyNotes": []
+  },
+  "4a23548134e2333851ca4ab3475fcf4d578832eea082b96f34cc27e32b4c2763": {
+    "imageRole": "label",
+    "observedText": ["Dell 65W USB-C power adapter"],
+    "itemCandidates": [
+      {
+        "brand": "Dell",
+        "model": null,
+        "category": "laptop_power_adapter",
+        "connector": "usb_c",
+        "confidence": 0.92,
+        "evidence": ["label fixture view"]
+      }
+    ],
+    "power": {
+      "volts": 20,
+      "amps": 3.25,
+      "watts": 65,
+      "polarity": null,
+      "sourceText": "20V 3.25A 65W"
+    },
+    "condition": { "grade": "B", "observations": [] },
+    "safetySignals": {
+      "batteryVisible": false,
+      "batterySwellingVisible": false,
+      "exposedWireVisible": false,
+      "burnMarkVisible": false,
+      "crackedMainsHousingVisible": false,
+      "liquidDamageVisible": false,
+      "unknownPowerLabel": false,
+      "notes": []
+    },
+    "dataRisk": {
+      "likelyDataBearing": false,
+      "screenShowsPersonalData": false,
+      "activationLockRisk": false,
+      "notes": []
+    },
+    "missingViews": [],
+    "uncertaintyNotes": []
+  }
+}

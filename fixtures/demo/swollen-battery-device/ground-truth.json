@@ -1,0 +1,28 @@
+{
+  "slug": "swollen-battery-device",
+  "title": "Battery device with visible swelling",
+  "category": "battery_device",
+  "connector": null,
+  "expectedSafety": "DO_NOT_LIST",
+  "expectedEvidence": "COMPLETE",
+  "expectedRoute": "RECYCLE",
+  "expectedDataRisk": "CLEAR",
+  "expectedPriceBandCents": null,
+  "photos": [
+    {
+      "file": "photos/01-full_item.webp",
+      "sha256": "ee6326288268d0f22075f8986aabca1f597a63d2d3f611ba8c1e1341e44c8068",
+      "role": "full_item"
+    },
+    {
+      "file": "photos/02-connector.webp",
+      "sha256": "cf751d74062ae6c5e1a48307104fc2ccabff82e02652a4eb4064ba87eeb83df3",
+      "role": "connector"
+    },
+    {
+      "file": "photos/03-label.webp",
+      "sha256": "5fa38d827361d10fa8342a68a2ec801815ce1e9d4a8dec4e762fd1e86f6fb862",
+      "role": "label"
+    }
+  ]
+}

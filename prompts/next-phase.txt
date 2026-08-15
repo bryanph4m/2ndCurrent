@@ -1,0 +1,5 @@
+Implement Phase <number> from the architecture plan.
+
+Do not change completed phase behavior unless required by a failing contract. Keep the scope limited to this phase. Do not commit or push. Do not add attribution.
+
+Run all required checks, fix failures, summarize the work, and stop after this phase.
