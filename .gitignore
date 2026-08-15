@@ -10,3 +10,6 @@ apps/web/next-env.d.ts
 graphify-out/
 .pnpm-store/
 .gstack/
+
+.vercel
+.env*

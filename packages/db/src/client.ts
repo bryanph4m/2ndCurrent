@@ -15,10 +15,21 @@ function createClient(): PrismaClient {
   return new PrismaClient({ adapter });
 }
 
-export const db = globalForPrisma.prisma ?? createClient();
-
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = db;
+// Deferred until first query: importing this module (as every page that
+// reads from the db does) must not require a live DATABASE_URL, or Next's
+// build-time page-data collection fails for every such page, not just the
+// one being rendered.
+function getClient(): PrismaClient {
+  if (!globalForPrisma.prisma) {
+    globalForPrisma.prisma = createClient();
+  }
+  return globalForPrisma.prisma;
 }
+
+export const db = new Proxy({} as PrismaClient, {
+  get(_target, prop, receiver) {
+    return Reflect.get(getClient() as object, prop, receiver);
+  },
+});
 
 export type { PrismaClient } from "../generated/prisma/client";
