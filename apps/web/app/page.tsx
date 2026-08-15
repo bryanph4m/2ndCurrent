@@ -8,7 +8,6 @@ const examples = [
     route: "Resell",
     price: "$18 - $24",
     condition: "Grade B",
-    tone: "sage",
   },
   {
     title: "Over-ear headphones",
@@ -16,7 +15,6 @@ const examples = [
     route: "Repair",
     price: "$32 - $46",
     condition: "Grade C",
-    tone: "sun",
   },
   {
     title: "Four-port USB hub",
@@ -24,7 +22,13 @@ const examples = [
     route: "Donate",
     price: "$10 - $16",
     condition: "Grade A",
-    tone: "blue",
+  },
+  {
+    title: "Bluetooth speaker",
+    kind: "device" as const,
+    route: "Resell",
+    price: "$14 - $22",
+    condition: "Grade B",
   },
 ];
 
@@ -121,7 +125,7 @@ export default function HomePage() {
           <div className="product-grid">
             {examples.map((example) => (
               <article className="product-card" key={example.title}>
-                <div className={`product-art product-art-${example.tone}`}>
+                <div className="product-art">
                   <span className="example-label">Example report</span>
                   <ProductGlyph kind={example.kind} />
                 </div>
