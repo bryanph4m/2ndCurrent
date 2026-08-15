@@ -1,0 +1,658 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../packages/db/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ContactStatus {
+  ACTIVE
+  OPTED_OUT
+  BLOCKED
+}
+
+enum ConversationState {
+  NEW
+  WAITING_FOR_CONSENT
+  WAITING_FOR_PHOTOS
+  WAITING_FOR_PAYMENT
+  ORDER_PAID
+  ANALYZING
+  WAITING_FOR_MORE_EVIDENCE
+  WAITING_FOR_HUMAN_REVIEW
+  RESULT_READY
+  DELIVERED
+  CLOSED
+  OPTED_OUT
+  BLOCKED
+  ERROR
+}
+
+enum MessageDirection {
+  INBOUND
+  OUTBOUND
+}
+
+enum MessageStatus {
+  RECEIVED
+  QUEUED
+  SENT
+  DELIVERED
+  FAILED
+  CANCELED
+}
+
+enum MediaKind {
+  IMAGE
+  VIDEO
+}
+
+enum MediaLabel {
+  FULL_ITEM
+  CONNECTOR
+  LABEL
+  DAMAGE
+  POWER_ON
+  OTHER
+}
+
+enum OrderStatus {
+  DRAFT
+  CHECKOUT_CREATED
+  PAID
+  FULFILLING
+  COMPLETED
+  EXPIRED
+  CANCELED
+  REFUND_PENDING
+  REFUNDED
+  FAILED
+}
+
+enum ItemStatus {
+  INTAKE
+  WAITING_FOR_PAYMENT
+  QUEUED
+  ANALYZING
+  WAITING_FOR_EVIDENCE
+  WAITING_FOR_REVIEW
+  FINALIZING
+  READY
+  LISTED
+  RESERVED
+  MATCHED
+  HANDED_OFF
+  CLOSED
+  REJECTED
+  ERROR
+}
+
+enum SafetyStatus {
+  CLEAR
+  NEEDS_REVIEW
+  DO_NOT_LIST
+}
+
+enum DispositionRoute {
+  RESELL
+  DONATE
+  REPAIR
+  RECYCLE
+  NEEDS_MORE_EVIDENCE
+  DO_NOT_LIST
+}
+
+enum StudyType {
+  ITEM_VERIFICATION
+  PRODUCT_DIAGNOSTIC
+  BLIND_COMPARISON
+}
+
+enum StudyStatus {
+  DRAFT
+  CREATED_AT_PROVIDER
+  LAUNCHED
+  COLLECTING
+  READY_TO_AGGREGATE
+  COMPLETED
+  FAILED
+  CANCELED
+}
+
+enum ReviewResponseStatus {
+  RECEIVED
+  APPROVED
+  REJECTED
+}
+
+enum ListingStatus {
+  DRAFT
+  ACTIVE
+  RESERVED
+  SOLD
+  WITHDRAWN
+  EXPIRED
+}
+
+enum DemandStatus {
+  OPEN
+  MATCHED
+  CLOSED
+}
+
+enum MatchStatus {
+  PROPOSED
+  SENT
+  ACCEPTED
+  DECLINED
+  EXPIRED
+  COMPLETED
+  CANCELED
+}
+
+enum WebhookStatus {
+  RECEIVED
+  PROCESSING
+  PROCESSED
+  FAILED
+  IGNORED
+}
+
+enum WorkflowStatus {
+  QUEUED
+  RUNNING
+  WAITING
+  SUCCEEDED
+  FAILED
+  CANCELED
+}
+
+enum EvaluationVariant {
+  BASELINE
+  REVISED
+}
+
+model Contact {
+  id              String        @id @default(cuid())
+  phoneHash       String        @unique
+  phoneCiphertext String
+  status          ContactStatus @default(ACTIVE)
+  linqChatId      String?
+  consentedAt     DateTime?
+  optedOutAt      DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  conversations  Conversation[]
+  messages       Message[]
+  orders         ServiceOrder[]
+  items          Item[]
+  demandRequests DemandRequest[]
+  outboxMessages OutboxMessage[]
+}
+
+model Conversation {
+  id             String            @id @default(cuid())
+  contactId      String
+  state          ConversationState @default(NEW)
+  activeItemId   String?
+  lastInboundAt  DateTime?
+  lastOutboundAt DateTime?
+  version        Int               @default(0)
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  contact    Contact   @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  activeItem Item?     @relation("ActiveConversationItem", fields: [activeItemId], references: [id])
+  messages   Message[]
+
+  @@index([contactId, state])
+}
+
+model Message {
+  id                String           @id @default(cuid())
+  contactId         String
+  conversationId    String
+  direction         MessageDirection
+  status            MessageStatus
+  provider          String
+  providerMessageId String?          @unique
+  text              String?
+  normalizedCommand String?
+  rawPayload        Json?
+  sentAt            DateTime?
+  deliveredAt       DateTime?
+  createdAt         DateTime         @default(now())
+
+  contact      Contact      @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  media        MediaAsset[]
+
+  @@index([conversationId, createdAt])
+}
+
+model Item {
+  id                  String            @id @default(cuid())
+  publicId            String            @unique @default(cuid())
+  ownerContactId      String
+  status              ItemStatus        @default(INTAKE)
+  sellerDescription   String?
+  category            String?
+  weightGrams         Int?
+  activePolicyVersion String
+  currentAnalysisId   String?
+  finalRoute          DispositionRoute?
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+
+  owner               Contact           @relation(fields: [ownerContactId], references: [id])
+  activeConversations Conversation[]    @relation("ActiveConversationItem")
+  media               MediaAsset[]
+  orders              ServiceOrder[]
+  analyses            AnalysisRun[]
+  evidenceRequests    EvidenceRequest[]
+  studies             ReviewStudy[]
+  passport            RecoveryPassport?
+  listing             Listing?
+  impactEvents        ImpactEvent[]
+  workflowRuns        WorkflowRun[]
+  auditEvents         AuditEvent[]
+
+  @@index([ownerContactId, status])
+  @@index([status, createdAt])
+}
+
+model MediaAsset {
+  id                String     @id @default(cuid())
+  itemId            String
+  messageId         String?
+  kind              MediaKind
+  label             MediaLabel @default(OTHER)
+  objectKey         String     @unique
+  mimeType          String
+  sizeBytes         Int
+  sha256            String
+  width             Int?
+  height            Int?
+  sourceProviderId  String?
+  metadataRemovedAt DateTime?
+  createdAt         DateTime   @default(now())
+
+  item    Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  message Message? @relation(fields: [messageId], references: [id], onDelete: SetNull)
+
+  @@unique([itemId, sha256])
+  @@index([itemId, label])
+}
+
+model ServiceOrder {
+  id                String      @id @default(cuid())
+  contactId         String
+  itemId            String
+  productCode       String
+  status            OrderStatus @default(DRAFT)
+  amountCents       Int
+  currency          String      @default("USD")
+  humanBudgetCents  Int         @default(0)
+  checkoutSessionId String?     @unique
+  paymentId         String?     @unique
+  checkoutUrl       String?
+  paidAt            DateTime?
+  completedAt       DateTime?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  contact       Contact       @relation(fields: [contactId], references: [id])
+  item          Item          @relation(fields: [itemId], references: [id])
+  ledgerEntries LedgerEntry[]
+
+  @@index([contactId, status])
+  @@index([itemId, status])
+}
+
+model LedgerEntry {
+  id                String   @id @default(cuid())
+  orderId           String
+  type              String
+  amountCents       Int
+  currency          String   @default("USD")
+  providerReference String?
+  note              String?
+  createdAt         DateTime @default(now())
+
+  order ServiceOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId, createdAt])
+}
+
+model AnalysisRun {
+  id                 String        @id @default(cuid())
+  itemId             String
+  version            Int
+  status             String
+  modelProvider      String
+  modelName          String
+  promptVersion      String
+  policyVersion      String
+  inputHash          String
+  rawOutput          Json?
+  normalizedOutput   Json?
+  identityConfidence Float?
+  safetyStatus       SafetyStatus?
+  reviewDecision     Json?
+  errorCode          String?
+  errorMessage       String?
+  startedAt          DateTime      @default(now())
+  finishedAt         DateTime?
+
+  item Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@unique([itemId, version])
+  @@index([itemId, status])
+}
+
+model EvidenceRequest {
+  id              String    @id @default(cuid())
+  itemId          String
+  analysisRunId   String?
+  requestedLabels Json
+  reasonCodes     Json
+  promptText      String
+  status          String
+  requestNumber   Int
+  fulfilledAt     DateTime?
+  createdAt       DateTime  @default(now())
+
+  item Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@unique([itemId, requestNumber])
+}
+
+model ReviewStudy {
+  id                    String      @id @default(cuid())
+  itemId                String?
+  type                  StudyType
+  status                StudyStatus @default(DRAFT)
+  templateVersion       String
+  publicTokenHash       String      @unique
+  externalOpportunityId String?     @unique
+  targetParticipants    Int
+  approvedResponses     Int         @default(0)
+  quotedCostCents       Int?
+  actualCostCents       Int?
+  currency              String      @default("USD")
+  configuration         Json
+  launchedAt            DateTime?
+  completedAt           DateTime?
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+
+  item            Item?            @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  responses       ReviewResponse[]
+  metricSnapshots MetricSnapshot[]
+  productChanges  ProductChange[]
+  humanFindings   HumanFinding[]
+
+  @@index([itemId, status])
+  @@index([type, status])
+}
+
+model ReviewResponse {
+  id                   String               @id @default(cuid())
+  studyId              String
+  externalSubmissionId String               @unique
+  externalTaskId       String?
+  status               ReviewResponseStatus @default(RECEIVED)
+  answers              Json?
+  qualityFlags         Json?
+  submittedAt          DateTime             @default(now())
+  approvedAt           DateTime?
+  rejectedAt           DateTime?
+
+  study         ReviewStudy    @relation(fields: [studyId], references: [id], onDelete: Cascade)
+  humanFindings HumanFinding[]
+
+  @@index([studyId, status])
+}
+
+model RecoveryPassport {
+  id                  String           @id @default(cuid())
+  itemId              String           @unique
+  publicSlug          String           @unique
+  version             Int              @default(1)
+  title               String
+  brand               String?
+  modelName           String?
+  category            String
+  connector           String?
+  powerText           String?
+  conditionGrade      String
+  identityConfidence  Float
+  safetyStatus        SafetyStatus
+  dataRisk            String
+  recommendedRoute    DispositionRoute
+  suggestedPriceCents Int?
+  knownFacts          Json
+  unknownFacts        Json
+  evidenceSummary     Json
+  humanReviewCount    Int              @default(0)
+  disclaimer          String
+  publishedAt         DateTime?
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+
+  item Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+}
+
+model Listing {
+  id               String        @id @default(cuid())
+  itemId           String        @unique
+  status           ListingStatus @default(DRAFT)
+  priceCents       Int
+  currency         String        @default("USD")
+  locationCode     String
+  sellerApprovedAt DateTime?
+  expiresAt        DateTime?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  item    Item    @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  matches Match[]
+
+  @@index([status, locationCode])
+}
+
+model DemandRequest {
+  id              String       @id @default(cuid())
+  contactId       String
+  status          DemandStatus @default(OPEN)
+  rawText         String
+  structuredQuery Json
+  locationCode    String
+  maxPriceCents   Int?
+  expiresAt       DateTime?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  contact Contact @relation(fields: [contactId], references: [id])
+  matches Match[]
+
+  @@index([status, locationCode])
+}
+
+model Match {
+  id                String      @id @default(cuid())
+  listingId         String
+  demandRequestId   String
+  status            MatchStatus @default(PROPOSED)
+  score             Float
+  reasonCodes       Json
+  sellerCodeHash    String?
+  buyerCodeHash     String?
+  sellerConfirmedAt DateTime?
+  buyerConfirmedAt  DateTime?
+  expiresAt         DateTime?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  listing       Listing       @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  demandRequest DemandRequest @relation(fields: [demandRequestId], references: [id], onDelete: Cascade)
+
+  @@unique([listingId, demandRequestId])
+  @@index([status, expiresAt])
+}
+
+model WebhookEvent {
+  id              String        @id @default(cuid())
+  provider        String
+  externalEventId String
+  eventType       String
+  status          WebhookStatus @default(RECEIVED)
+  rawBody         String
+  rawBodySha256   String
+  headers         Json
+  payload         Json?
+  attemptCount    Int           @default(0)
+  lastError       String?
+  receivedAt      DateTime      @default(now())
+  processedAt     DateTime?
+
+  @@unique([provider, externalEventId])
+  @@index([status, receivedAt])
+}
+
+model OutboxMessage {
+  id                String        @id @default(cuid())
+  contactId         String
+  idempotencyKey    String        @unique
+  messageType       String
+  payload           Json
+  status            MessageStatus @default(QUEUED)
+  attemptCount      Int           @default(0)
+  providerMessageId String?
+  nextAttemptAt     DateTime      @default(now())
+  sentAt            DateTime?
+  lastError         String?
+  createdAt         DateTime      @default(now())
+
+  contact Contact @relation(fields: [contactId], references: [id])
+
+  @@index([status, nextAttemptAt])
+}
+
+model WorkflowRun {
+  id             String         @id @default(cuid())
+  itemId         String?
+  taskName       String
+  idempotencyKey String         @unique
+  providerRunId  String?        @unique
+  status         WorkflowStatus @default(QUEUED)
+  input          Json
+  output         Json?
+  attemptCount   Int            @default(0)
+  lastError      String?
+  startedAt      DateTime?
+  finishedAt     DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  item Item? @relation(fields: [itemId], references: [id], onDelete: SetNull)
+
+  @@index([status, createdAt])
+}
+
+model PolicyVersion {
+  id        String   @id @default(cuid())
+  key       String
+  version   String
+  config    Json
+  active    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@unique([key, version])
+  @@index([key, active])
+}
+
+model MetricSnapshot {
+  id         String            @id @default(cuid())
+  studyId    String
+  variant    EvaluationVariant
+  metrics    Json
+  sampleSize Int
+  createdAt  DateTime          @default(now())
+
+  study ReviewStudy @relation(fields: [studyId], references: [id], onDelete: Cascade)
+
+  @@unique([studyId, variant])
+}
+
+model ProductChange {
+  id                   String   @id @default(cuid())
+  studyId              String
+  humanFindingId       String
+  code                 String
+  finding              String
+  oldValue             Json?
+  newValue             Json?
+  appliedPolicyKey     String?
+  appliedPolicyVersion String?
+  createdAt            DateTime @default(now())
+
+  study        ReviewStudy  @relation(fields: [studyId], references: [id], onDelete: Cascade)
+  humanFinding HumanFinding @relation(fields: [humanFindingId], references: [id], onDelete: Restrict)
+
+  @@index([studyId, createdAt])
+  @@index([humanFindingId])
+}
+
+model HumanFinding {
+  id               String   @id @default(cuid())
+  studyId          String
+  sourceResponseId String?
+  code             String
+  findingText      String
+  occurrenceCount  Int      @default(1)
+  createdAt        DateTime @default(now())
+
+  study          ReviewStudy     @relation(fields: [studyId], references: [id], onDelete: Cascade)
+  sourceResponse ReviewResponse? @relation(fields: [sourceResponseId], references: [id], onDelete: SetNull)
+  productChanges ProductChange[]
+
+  @@index([studyId, createdAt])
+  @@index([sourceResponseId])
+}
+
+model ImpactEvent {
+  id         String   @id @default(cuid())
+  itemId     String
+  type       String
+  quantity   Float?
+  unit       String?
+  valueCents Int?
+  evidence   Json?
+  createdAt  DateTime @default(now())
+
+  item Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@index([type, createdAt])
+}
+
+model AuditEvent {
+  id         String   @id @default(cuid())
+  itemId     String?
+  actorType  String
+  actorId    String?
+  action     String
+  entityType String
+  entityId   String
+  before     Json?
+  after      Json?
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  item Item? @relation(fields: [itemId], references: [id], onDelete: SetNull)
+
+  @@index([entityType, entityId, createdAt])
+}
