@@ -2,20 +2,22 @@ import { ProductGlyph } from "@/components/ProductGlyph";
 import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
 import { TextUsButton } from "@/components/TextUsButton";
 
-const examples = [
+const featuredItems = [
   {
-    title: "USB-C power adapter",
+    title: "Dell 65W USB-C power adapter",
     kind: "adapter" as const,
     route: "Resell",
     price: "$18 - $24",
     condition: "Grade B",
+    tone: "blue",
   },
   {
-    title: "Over-ear headphones",
+    title: "Over-ear wireless headphones",
     kind: "headphones" as const,
     route: "Repair",
     price: "$32 - $46",
     condition: "Grade C",
+    tone: "coral",
   },
   {
     title: "Four-port USB hub",
@@ -23,180 +25,234 @@ const examples = [
     route: "Donate",
     price: "$10 - $16",
     condition: "Grade A",
+    tone: "cream",
   },
   {
-    title: "Bluetooth speaker",
+    title: "Compact Bluetooth speaker",
     kind: "device" as const,
     route: "Resell",
     price: "$14 - $22",
     condition: "Grade B",
+    tone: "yellow",
+  },
+  {
+    title: "Travel charging block",
+    kind: "adapter" as const,
+    route: "Donate",
+    price: "$8 - $12",
+    condition: "Grade B",
+    tone: "mint",
+  },
+  {
+    title: "Wired desktop headphones",
+    kind: "headphones" as const,
+    route: "Recycle",
+    price: "$6 - $10",
+    condition: "Grade C",
+    tone: "lavender",
   },
 ];
 
+const categories = [
+  { name: "Phones", kind: "device" as const, tone: "coral" },
+  { name: "Computers", kind: "device" as const, tone: "blue" },
+  { name: "Chargers", kind: "adapter" as const, tone: "yellow" },
+  { name: "Audio", kind: "headphones" as const, tone: "lavender" },
+  { name: "Cables", kind: "hub" as const, tone: "mint" },
+  { name: "Accessories", kind: "hub" as const, tone: "cream" },
+  { name: "Other tech", kind: "device" as const, tone: "slate" },
+];
+
 const outcomes = [
-  { name: "Resell", detail: "Price guidance and listing-ready facts", icon: "↗" },
-  { name: "Donate", detail: "A useful handoff with less uncertainty", icon: "♡" },
-  { name: "Repair", detail: "The missing detail or fix worth pursuing", icon: "+" },
-  { name: "Recycle", detail: "A safer end-of-life route when reuse is not right", icon: "↻" },
+  { name: "Resell", detail: "Price guidance and listing-ready facts", mark: "01" },
+  { name: "Donate", detail: "A useful handoff with less uncertainty", mark: "02" },
+  { name: "Repair", detail: "The missing detail or fix worth pursuing", mark: "03" },
+  { name: "Recycle", detail: "A safer end-of-life route when reuse is not right", mark: "04" },
 ];
 
 export default function HomePage() {
   return (
     <>
       <SiteHeader />
-      <main>
-        <section className="hero-shell">
-          <div className="hero-copy">
-            <p className="eyebrow">A better current for used electronics</p>
-            <h1>Know what it is. Know what it is worth. Know where it goes next.</h1>
-            <p className="hero-lede">
-              Send a few photos by text. SecondCurrent turns the visible evidence into a clear item
-              record, price guidance, and a safer next step.
-            </p>
-            <div className="hero-actions">
-              <TextUsButton className="button button-primary button-large">
-                Text us a photo
-              </TextUsButton>
-              <a className="text-link" href="#how-it-works">
-                See how it works <span aria-hidden="true">↓</span>
-              </a>
-            </div>
-            <div className="trust-row" aria-label="Service benefits">
-              <span>✓ No app to install</span>
-              <span>✓ Human review when needed</span>
-              <span>✓ Safety-first routing</span>
-            </div>
-          </div>
-
-          <div className="passport-preview" aria-label="Example SecondCurrent item passport">
-            <div className="preview-topline">
-              <span className="status-dot" />
-              Example item passport
-              <span className="preview-id">SC-02418</span>
-            </div>
-            <div className="preview-visual">
-              <ProductGlyph kind="adapter" />
-              <span className="evidence-tag evidence-tag-one">Full item</span>
-              <span className="evidence-tag evidence-tag-two">Label found</span>
-            </div>
-            <div className="preview-details">
-              <div>
-                <p className="preview-kicker">Identity confidence: high</p>
-                <h2>Dell 65W USB-C power adapter</h2>
-              </div>
-              <span className="route-pill">Resell</span>
-            </div>
-            <div className="preview-stats">
-              <div>
-                <span>Condition</span>
-                <strong>Grade B</strong>
-              </div>
-              <div>
-                <span>Suggested range</span>
-                <strong>$18 - $24</strong>
-              </div>
-              <div>
-                <span>Safety</span>
-                <strong>Clear</strong>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="category-strip" aria-label="Electronics categories">
-          <span>Phones</span>
-          <span>Computers</span>
-          <span>Cables</span>
-          <span>Audio</span>
-          <span>Chargers</span>
-          <span>Accessories</span>
-        </section>
-
-        <section className="section-shell examples-section" id="what-you-get">
-          <div className="section-heading split-heading">
-            <div>
-              <p className="eyebrow">Evidence, organized</p>
-              <h2>A product page you can actually trust</h2>
-            </div>
+      <main className="market-home">
+        <section className="market-hero" aria-labelledby="market-hero-title">
+          <div className="market-hero-copy">
+            <p className="market-overline">A better current for used electronics</p>
+            <h1 id="market-hero-title">Turn mystery tech into a useful next step.</h1>
             <p>
-              Marketplace listings are built to sell. A SecondCurrent passport is built to show what
-              the photos support, what remains unknown, and what to do next.
+              Text us a few photos. Get a clear item record, price guidance, and a safer route for
+              resale, repair, donation, or recycling.
             </p>
+            <TextUsButton className="market-cta market-cta-dark">Text us a photo</TextUsButton>
           </div>
-          <div className="product-grid">
-            {examples.map((example) => (
-              <article className="product-card" key={example.title}>
-                <div className="product-art">
-                  <span className="example-label">Example report</span>
-                  <ProductGlyph kind={example.kind} />
+
+          <div className="market-hero-visual" aria-label="Example electronics item passport">
+            <div className="hero-orbit hero-orbit-one" />
+            <div className="hero-orbit hero-orbit-two" />
+            <div className="hero-product-disc">
+              <ProductGlyph kind="adapter" />
+            </div>
+            <div className="hero-passport-card">
+              <div>
+                <span className="status-dot" />
+                <small>Identity confidence: high</small>
+              </div>
+              <strong>Dell 65W USB-C adapter</strong>
+              <p>Grade B · Suggested $18 - $24</p>
+              <span className="hero-route-pill">Resell</span>
+            </div>
+          </div>
+
+          <div className="market-carousel-controls" aria-label="Featured story controls">
+            <button type="button" aria-label="Previous story">
+              &#8592;
+            </button>
+            <div aria-label="Slide 1 of 3">
+              <span className="is-active" />
+              <span />
+              <span />
+            </div>
+            <button type="button" aria-label="Next story">
+              &#8594;
+            </button>
+          </div>
+        </section>
+
+        <section className="market-section" id="what-you-get">
+          <div className="market-section-heading">
+            <div>
+              <h2>Popular item passports</h2>
+              <p>See how everyday electronics become clear, reusable records.</p>
+            </div>
+            <a href="#how-it-works">
+              See how it works <span aria-hidden="true">&#8594;</span>
+            </a>
+          </div>
+
+          <div className="market-product-row">
+            {featuredItems.map((item) => (
+              <article className="market-product-card" key={item.title}>
+                <div className={`market-product-art market-tone-${item.tone}`}>
+                  <span className="market-card-badge">Verified example</span>
+                  <ProductGlyph kind={item.kind} />
+                  <button
+                    type="button"
+                    aria-label={`Save ${item.title}`}
+                    className="market-save-button"
+                  >
+                    &#9825;
+                  </button>
                 </div>
-                <div className="product-card-body">
-                  <p className="product-meta">
-                    Verified <span>•</span> {example.condition}
+                <div className="market-product-copy">
+                  <h3>{item.title}</h3>
+                  <strong>{item.price}</strong>
+                  <p>
+                    {item.condition} · {item.route}
                   </p>
-                  <h3>{example.title}</h3>
-                  <div className="product-card-bottom">
-                    <strong>{example.price}</strong>
-                    <span className="small-route-pill">{example.route}</span>
-                  </div>
                 </div>
               </article>
             ))}
           </div>
         </section>
 
-        <section className="process-section" id="how-it-works">
-          <div className="section-shell process-grid">
-            <div className="process-intro">
-              <p className="eyebrow eyebrow-light">Three simple steps</p>
-              <h2>From mystery drawer to useful next step.</h2>
-              <p>
-                Start with the evidence you already have. We will ask for another photo only when it
-                can change the result.
-              </p>
-              <TextUsButton className="button button-light">Start by text</TextUsButton>
+        <section className="market-promo market-promo-navy" id="how-it-works">
+          <div className="market-promo-copy">
+            <p className="market-overline">Simple from the first text</p>
+            <h2>Three photos. One evidence-backed answer.</h2>
+            <p>
+              Show the full item, its connector, and any label. We only ask another question when it
+              can meaningfully change the result.
+            </p>
+            <TextUsButton className="market-cta market-cta-light">Start by text</TextUsButton>
+          </div>
+          <ol className="market-step-stack">
+            <li>
+              <span>1</span>
+              <div>
+                <strong>Send clear photos</strong>
+                <p>No app or account to create.</p>
+              </div>
+            </li>
+            <li>
+              <span>2</span>
+              <div>
+                <strong>We check the evidence</strong>
+                <p>Identity, condition, safety, data risk, and value.</p>
+              </div>
+            </li>
+            <li>
+              <span>3</span>
+              <div>
+                <strong>Get your item passport</strong>
+                <p>A useful record with the right next route.</p>
+              </div>
+            </li>
+          </ol>
+        </section>
+
+        <section className="market-section market-category-section">
+          <div className="market-section-heading">
+            <div>
+              <h2>Explore common electronics</h2>
+              <p>Start with whatever is waiting in the drawer.</p>
             </div>
-            <ol className="step-list">
-              <li>
-                <span>01</span>
-                <div>
-                  <h3>Send a few clear photos</h3>
-                  <p>Show the full item, its connector, and any label or model number.</p>
+            <TextUsButton className="market-inline-action">Check an item &#8594;</TextUsButton>
+          </div>
+          <div className="market-category-row">
+            {categories.map((category) => (
+              <div className="market-category-card" key={category.name}>
+                <div className={`market-category-art market-tone-${category.tone}`}>
+                  <ProductGlyph kind={category.kind} />
                 </div>
-              </li>
-              <li>
-                <span>02</span>
-                <div>
-                  <h3>We check the visible evidence</h3>
-                  <p>Identity, condition, data risk, safety, and likely market value.</p>
-                </div>
-              </li>
-              <li>
-                <span>03</span>
-                <div>
-                  <h3>Get a reusable item passport</h3>
-                  <p>Keep a clear record and take the recommended route with more confidence.</p>
-                </div>
-              </li>
-            </ol>
+                <strong>{category.name}</strong>
+              </div>
+            ))}
           </div>
         </section>
 
-        <section className="section-shell outcome-section" id="why-secondcurrent">
-          <div className="section-heading centered-heading">
-            <p className="eyebrow">Not everything belongs in a listing</p>
-            <h2>One item. The right next current.</h2>
+        <section className="market-promo market-promo-coral" id="why-secondcurrent">
+          <div className="market-promo-copy">
+            <p className="market-overline">Evidence over guesswork</p>
+            <h2>A product page you can actually trust.</h2>
             <p>
-              The best outcome may be a sale, a donation, a repair, or responsible recycling. The
-              evidence decides.
+              Confirmed facts stay separate from open questions, with human review when the photos
+              cannot tell the whole story.
             </p>
+            <a className="market-cta market-cta-outline" href="#routes">
+              See the possible routes
+            </a>
           </div>
-          <div className="outcome-grid">
+          <div className="market-proof-card">
+            <p>SecondCurrent item passport</p>
+            <div>
+              <span>Visible limits</span>
+              <strong>Unknown stays unknown</strong>
+            </div>
+            <div>
+              <span>Human checkpoints</span>
+              <strong>Review when it matters</strong>
+            </div>
+            <div>
+              <span>Safer handoffs</span>
+              <strong>Risks surfaced early</strong>
+            </div>
+          </div>
+        </section>
+
+        <section className="market-section" id="routes">
+          <div className="market-section-heading">
+            <div>
+              <h2>One item. The right next current.</h2>
+              <p>The best outcome is not always a listing. The evidence decides.</p>
+            </div>
+            <a href="#start">
+              Start with one item <span aria-hidden="true">&#8594;</span>
+            </a>
+          </div>
+          <div className="market-outcome-row">
             {outcomes.map((outcome) => (
-              <article className="outcome-card" key={outcome.name}>
-                <span className="outcome-icon" aria-hidden="true">
-                  {outcome.icon}
-                </span>
+              <article className="market-outcome-card" key={outcome.name}>
+                <span>{outcome.mark}</span>
                 <h3>{outcome.name}</h3>
                 <p>{outcome.detail}</p>
               </article>
@@ -204,35 +260,12 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="proof-section">
-          <div className="section-shell proof-grid">
-            <div>
-              <p className="eyebrow">Why the record matters</p>
-              <h2>Less guesswork for everyone downstream.</h2>
-            </div>
-            <div className="proof-points">
-              <div>
-                <strong>Visible limits</strong>
-                <p>Unknown facts stay unknown. Confidence is labeled instead of hidden.</p>
-              </div>
-              <div>
-                <strong>Human checkpoints</strong>
-                <p>Ambiguous or sensitive items can be reviewed before a public passport ships.</p>
-              </div>
-              <div>
-                <strong>Safer handoffs</strong>
-                <p>Data risk and visible hazards are surfaced before resale or donation.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="final-cta">
+        <section className="market-final-banner" id="start">
           <div>
-            <p className="eyebrow">Start with one forgotten device</p>
+            <p className="market-overline">Start with one forgotten device</p>
             <h2>Give it a better next use.</h2>
           </div>
-          <TextUsButton className="button button-primary button-large">
+          <TextUsButton className="market-cta market-cta-dark">
             Text photos to SecondCurrent
           </TextUsButton>
         </section>
