@@ -70,7 +70,7 @@ and configure the Payment Link's after-payment redirect as
 
 ## Deployment
 
-`render.yaml` defines the web service, workflow worker, managed PostgreSQL database, migration step, and health check. Configure a private S3-compatible bucket and all secrets before switching `INTEGRATION_MODE` to `live`. Follow [the operations runbook](docs/operations-runbook.md) for deployment order, smoke tests, incidents, and recovery.
+`render.yaml` defines the web service, workflow worker, migration step, and health check. Both services must receive the same external PostgreSQL `DATABASE_URL` (Neon for this deployment), private S3-compatible storage credentials, and provider secrets. Follow [the operations runbook](docs/operations-runbook.md) for deployment order, smoke tests, incidents, and recovery.
 
 ## Checks
 

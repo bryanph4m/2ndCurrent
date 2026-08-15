@@ -6,7 +6,12 @@
     "sessionUrl": false
   },
   "permissions": {
-    "ask": ["Bash(git commit)", "Bash(git commit *)", "Bash(git push *)", "Bash(git config *)"],
-    "deny": ["Read(./.env)", "Read(./.env.*)", "Read(./secrets/**)", "Read(./credentials/**)"]
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)",
+      "Read(./credentials/**)"
+    ],
+    "ask": []
   }
 }
