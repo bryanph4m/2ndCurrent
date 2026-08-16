@@ -2,7 +2,6 @@ import { assertTransition } from "../services/transitions";
 
 export type ItemState =
   | "INTAKE"
-  | "WAITING_FOR_PAYMENT"
   | "QUEUED"
   | "ANALYZING"
   | "WAITING_FOR_EVIDENCE"
@@ -18,8 +17,7 @@ export type ItemState =
   | "ERROR";
 
 export const ITEM_TRANSITIONS: Record<ItemState, readonly ItemState[]> = {
-  INTAKE: ["WAITING_FOR_PAYMENT"],
-  WAITING_FOR_PAYMENT: ["QUEUED"],
+  INTAKE: ["QUEUED"],
   QUEUED: ["ANALYZING"],
   ANALYZING: ["WAITING_FOR_EVIDENCE", "WAITING_FOR_REVIEW", "FINALIZING", "REJECTED", "ERROR"],
   WAITING_FOR_EVIDENCE: ["QUEUED"],
@@ -30,7 +28,10 @@ export const ITEM_TRANSITIONS: Record<ItemState, readonly ItemState[]> = {
   WAITING_FOR_REVIEW: ["FINALIZING", "REJECTED"],
   FINALIZING: ["READY"],
   READY: ["LISTED", "CLOSED"],
-  LISTED: ["RESERVED"],
+  // LISTED -> CLOSED direct: an online sale pays and closes in one webhook,
+  // with no in-person handoff wait - RESERVED/MATCHED/HANDED_OFF stay
+  // specific to the peer-match flow's confirm-then-meet-up code exchange.
+  LISTED: ["RESERVED", "CLOSED"],
   RESERVED: ["MATCHED"],
   MATCHED: ["HANDED_OFF"],
   HANDED_OFF: ["CLOSED"],

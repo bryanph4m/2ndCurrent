@@ -24,11 +24,3 @@ export function getIntakeCrypto(): IntakeCrypto {
   };
   return intakeCrypto;
 }
-
-export function getConversationTokenSecret(): Buffer {
-  const secretBase64 = process.env.SESSION_SECRET;
-  if (!secretBase64) {
-    throw new Error("SESSION_SECRET is required");
-  }
-  return Buffer.from(secretBase64, "base64");
-}

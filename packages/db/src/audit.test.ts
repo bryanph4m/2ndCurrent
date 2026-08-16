@@ -53,7 +53,7 @@ describe("transitionWithAudit", () => {
       actorType: "system",
       action: "item.transition",
       from: "INTAKE",
-      to: "WAITING_FOR_PAYMENT",
+      to: "QUEUED",
       assertFn: () => undefined,
       applyUpdate,
     });
@@ -64,7 +64,7 @@ describe("transitionWithAudit", () => {
       entityType: "Item",
       entityId: "item_1",
       before: { status: "INTAKE" },
-      after: { status: "WAITING_FOR_PAYMENT" },
+      after: { status: "QUEUED" },
     });
   });
 
@@ -79,7 +79,7 @@ describe("transitionWithAudit", () => {
       actorId: undefined,
       action: "item.transition",
       from: "INTAKE",
-      to: "WAITING_FOR_PAYMENT",
+      to: "QUEUED",
       assertFn: () => undefined,
       applyUpdate: () => Promise.resolve(),
     });

@@ -16,13 +16,15 @@ export function getContact(id: string) {
 export type FindOrCreateContactInput = {
   phoneHash: string;
   phoneCiphertext: string;
-  linqChatId: string;
+  // Optional: a buyer arriving through the web checkout has no Linq thread
+  // at all, unlike every SMS caller of this function.
+  linqChatId?: string;
 };
 
 export async function findOrCreateContact(input: FindOrCreateContactInput) {
   const existing = await db.contact.findUnique({ where: { phoneHash: input.phoneHash } });
   if (existing) {
-    if (existing.linqChatId !== input.linqChatId) {
+    if (input.linqChatId && existing.linqChatId !== input.linqChatId) {
       return db.contact.update({
         where: { id: existing.id },
         data: { linqChatId: input.linqChatId },
@@ -34,8 +36,22 @@ export async function findOrCreateContact(input: FindOrCreateContactInput) {
     data: {
       phoneHash: input.phoneHash,
       phoneCiphertext: input.phoneCiphertext,
-      linqChatId: input.linqChatId,
+      linqChatId: input.linqChatId ?? null,
     },
+  });
+}
+
+export function saveStripeConnectAccountId(contactId: string, accountId: string) {
+  return db.contact.update({
+    where: { id: contactId },
+    data: { stripeConnectAccountId: accountId },
+  });
+}
+
+export function markStripeConnectOnboarded(accountId: string) {
+  return db.contact.updateMany({
+    where: { stripeConnectAccountId: accountId },
+    data: { stripeConnectOnboardedAt: new Date() },
   });
 }
 

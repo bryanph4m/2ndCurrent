@@ -17,8 +17,6 @@ enum ConversationState {
   NEW
   WAITING_FOR_CONSENT
   WAITING_FOR_PHOTOS
-  WAITING_FOR_PAYMENT
-  ORDER_PAID
   ANALYZING
   WAITING_FOR_MORE_EVIDENCE
   WAITING_FOR_HUMAN_REVIEW
@@ -73,7 +71,6 @@ enum OrderStatus {
 
 enum ItemStatus {
   INTAKE
-  WAITING_FOR_PAYMENT
   QUEUED
   ANALYZING
   WAITING_FOR_EVIDENCE
@@ -175,15 +172,17 @@ enum EvaluationVariant {
 }
 
 model Contact {
-  id              String        @id @default(cuid())
-  phoneHash       String        @unique
-  phoneCiphertext String
-  status          ContactStatus @default(ACTIVE)
-  linqChatId      String?
-  consentedAt     DateTime?
-  optedOutAt      DateTime?
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  id                       String        @id @default(cuid())
+  phoneHash                String        @unique
+  phoneCiphertext          String
+  status                   ContactStatus @default(ACTIVE)
+  linqChatId               String?
+  consentedAt              DateTime?
+  optedOutAt               DateTime?
+  stripeConnectAccountId   String?       @unique
+  stripeConnectOnboardedAt DateTime?
+  createdAt                DateTime      @default(now())
+  updatedAt                DateTime      @updatedAt
 
   conversations  Conversation[]
   messages       Message[]

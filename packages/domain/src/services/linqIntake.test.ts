@@ -18,6 +18,7 @@ function createFakePorts() {
   const storedObjects = new Map<string, Buffer>();
   const recordedMessages = { count: 0 };
   const marketplaceCommands: string[] = [];
+  const analyzedItemIds: string[] = [];
   let nextId = 1;
 
   const ports: IntakePorts = {
@@ -90,8 +91,8 @@ function createFakePorts() {
     async storePrivateObject(input) {
       storedObjects.set(input.objectKey, input.bytes);
     },
-    async createRecoveryCheckOrder({ itemId }) {
-      return { checkoutUrl: `https://checkout.example.com/${itemId}` };
+    async enqueueItemAnalysis({ itemId }) {
+      analyzedItemIds.push(itemId);
     },
     async handleMarketplaceCommand({ command }) {
       marketplaceCommands.push(command.type);
@@ -107,6 +108,7 @@ function createFakePorts() {
     recordedMessages,
     marketplaceCommands,
     attachedLabelsByItem,
+    analyzedItemIds,
   };
 }
 
@@ -142,8 +144,8 @@ describe("processInboundLinqEvent", () => {
     expect(outbox[0]!.text).toContain("Send three photos");
   });
 
-  it("attaches three mock photos to one item, stores each, and moves to WAITING_FOR_PAYMENT", async () => {
-    const { ports, outbox, storedObjects } = createFakePorts();
+  it("attaches three mock photos to one item, stores each, and queues analysis for free", async () => {
+    const { ports, outbox, storedObjects, analyzedItemIds, conversations } = createFakePorts();
 
     await processInboundLinqEvent(baseEvent({ text: "SELL" }), crypto, ports);
     outbox.length = 0;
@@ -163,8 +165,11 @@ describe("processInboundLinqEvent", () => {
 
     expect(result).toMatchObject({ outcome: "PHOTOS_COMPLETE" });
     expect(storedObjects.size).toBe(3);
+    expect(analyzedItemIds).toHaveLength(1);
+    const conversation = [...conversations.values()][0]!;
+    expect(conversation.state).toBe("ANALYZING");
     expect(outbox).toHaveLength(1);
-    expect(outbox[0]!.text).toContain("https://checkout.example.com/");
+    expect(outbox[0]!.text).toBe("We are checking the item photos now.");
   });
 
   it("does not complete photo intake before three distinct photos arrive, and confirms progress instead of going silent", async () => {

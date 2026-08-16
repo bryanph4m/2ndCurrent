@@ -2,8 +2,8 @@ import { isOptOutText } from "../commands/optOut";
 import { parseCommand } from "../commands/parseCommand";
 import type { ParsedCommand } from "../commands/parseCommand";
 import {
+  ANALYSIS_STARTED_TEXT,
   CONSENT_AND_PHOTO_INSTRUCTIONS_TEXT,
-  CHECKOUT_LINK_PREFIX,
   ITEM_ALREADY_IN_PROGRESS_TEXT,
   OPT_OUT_CONFIRMATION_TEXT,
   buildPhotoProgressText,
@@ -88,10 +88,7 @@ export type IntakePorts = {
     text: string;
   }): Promise<void>;
   downloadAttachment(url: string): Promise<{ bytes: Buffer; mimeType: string }>;
-  createRecoveryCheckOrder(input: {
-    contactId: string;
-    itemId: string;
-  }): Promise<{ checkoutUrl: string }>;
+  enqueueItemAnalysis(input: { itemId: string }): Promise<void>;
   handleMarketplaceCommand(input: {
     contactId: string;
     rawText: string;
@@ -242,16 +239,13 @@ export async function processInboundLinqEvent(
       await ports.transitionConversation({
         conversationId: conversation.id,
         expectedVersion: conversation.version,
-        to: "WAITING_FOR_PAYMENT",
+        to: "ANALYZING",
       });
-      const { checkoutUrl } = await ports.createRecoveryCheckOrder({
-        contactId: contact.id,
-        itemId,
-      });
+      await ports.enqueueItemAnalysis({ itemId });
       await ports.enqueueOutbound({
         contactId: contact.id,
-        idempotencyKey: `checkout-link:${itemId}`,
-        text: `${CHECKOUT_LINK_PREFIX}${checkoutUrl}`,
+        idempotencyKey: `analysis-started:${itemId}`,
+        text: ANALYSIS_STARTED_TEXT,
       });
       return { outcome: "PHOTOS_COMPLETE", itemId };
     }

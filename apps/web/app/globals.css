@@ -870,7 +870,8 @@ textarea {
 .study-form select,
 .study-form textarea,
 .hero input,
-.hero select {
+.hero select,
+.text-us-modal input {
   width: 100%;
   min-height: 48px;
   margin-top: 12px;
@@ -1567,6 +1568,7 @@ table {
 
 .market-product-card {
   min-width: 0;
+  text-decoration: none;
 }
 
 .market-product-art {

@@ -8,6 +8,7 @@ vi.mock("@secondcurrent/db", () => ({
   findWebhookEventById: findWebhookEventByIdMock,
   createLinqIntakePorts: vi.fn(),
   sendQueuedOutboxMessages: vi.fn(),
+  startTaskOnce: vi.fn(),
 }));
 
 vi.mock("@renderinc/sdk/workflows", () => ({

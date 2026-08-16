@@ -9,6 +9,7 @@ import {
   LISTING_APPROVED_TEXT,
   LISTING_DECLINED_TEXT,
   NO_MATCH_TEXT,
+  PAYOUT_ONBOARDING_PREFIX,
   assertItemTransition,
   assertListingTransition,
   assertMatchTransition,
@@ -24,6 +25,20 @@ import {
 import type { Prisma } from "../generated/prisma/client";
 import { db } from "./client";
 import { transitionWithAudit } from "./audit";
+import { enqueueOutboxMessage } from "./repositories/outboxRepository";
+import { saveStripeConnectAccountId } from "./repositories/contactRepository";
+
+// Injected the same way createRecoveryCheckOrder used to inject Stripe's
+// checkout call: packages/db never imports a provider SDK directly.
+export type EnsureSellerPayoutAccountDeps = {
+  createConnectAccount: () => Promise<{ accountId: string }>;
+  createConnectOnboardingLink: (input: {
+    accountId: string;
+    returnUrl: string;
+    refreshUrl: string;
+  }) => Promise<{ url: string }>;
+  appBaseUrl: string;
+};
 
 const DEFAULT_LOCATION_CODE = "LOCAL";
 const HANDOFF_CODE_BYTES = 4;
@@ -275,7 +290,10 @@ export async function matchDemand(demandRequestId: string): Promise<{ matchId: s
   });
 }
 
-async function approveSellerListing(contactId: string): Promise<MarketplaceCommandResult | null> {
+async function approveSellerListing(
+  contactId: string,
+  deps: EnsureSellerPayoutAccountDeps,
+): Promise<MarketplaceCommandResult | null> {
   const listing = await db.listing.findFirst({
     where: { status: "DRAFT", item: { ownerContactId: contactId } },
     include: { item: { include: { passport: true } } },
@@ -330,7 +348,48 @@ async function approveSellerListing(contactId: string): Promise<MarketplaceComma
       text: LISTING_APPROVED_TEXT,
     });
   });
+
+  // Outside the transaction: this is a real Stripe network call, same rule
+  // as createRecoveryCheckOrder used to follow. A seller who is already
+  // connected just gets a fresh onboarding link (Account Links expire
+  // quickly and are single-use, so there is nothing worth caching here).
+  await ensureSellerPayoutOnboarding(contactId, passport.publicSlug, deps);
+
   return { outcome: "LISTING_APPROVED", listingId: listing.id };
+}
+
+async function ensureSellerPayoutOnboarding(
+  contactId: string,
+  itemSlug: string,
+  deps: EnsureSellerPayoutAccountDeps,
+): Promise<void> {
+  const contact = await db.contact.findUniqueOrThrow({ where: { id: contactId } });
+  // Onboarding is a one-time setup step, not a per-listing one - a seller
+  // who already has payouts working should not get asked again just for
+  // listing a second item.
+  if (contact.stripeConnectOnboardedAt) {
+    return;
+  }
+
+  let accountId = contact.stripeConnectAccountId;
+  if (!accountId) {
+    const account = await deps.createConnectAccount();
+    accountId = account.accountId;
+    await saveStripeConnectAccountId(contactId, accountId);
+  }
+
+  const returnUrl = `${deps.appBaseUrl}/item/${itemSlug}`;
+  const link = await deps.createConnectOnboardingLink({
+    accountId,
+    returnUrl,
+    refreshUrl: returnUrl,
+  });
+  await enqueueOutboxMessage({
+    contactId,
+    idempotencyKey: `payout-onboarding:${accountId}:${itemSlug}`,
+    messageType: "text",
+    payload: { text: `${PAYOUT_ONBOARDING_PREFIX}${link.url}` },
+  });
 }
 
 async function declineSellerListing(contactId: string): Promise<MarketplaceCommandResult | null> {
@@ -619,11 +678,14 @@ export async function confirmHandoff(
   });
 }
 
-export async function handleMarketplaceCommand(input: {
-  contactId: string;
-  rawText: string;
-  command: ParsedCommand;
-}): Promise<MarketplaceCommandResult> {
+export async function handleMarketplaceCommand(
+  input: {
+    contactId: string;
+    rawText: string;
+    command: ParsedCommand;
+  },
+  deps: EnsureSellerPayoutAccountDeps,
+): Promise<MarketplaceCommandResult> {
   if (input.command.type === "NEED") {
     const demand = await createDemandRequest({
       contactId: input.contactId,
@@ -635,7 +697,7 @@ export async function handleMarketplaceCommand(input: {
   }
   if (input.command.type === "APPROVE") {
     return (
-      (await approveSellerListing(input.contactId)) ??
+      (await approveSellerListing(input.contactId, deps)) ??
       (await respondToBuyerMatch(input.contactId, true)) ?? { outcome: "NO_MARKETPLACE_ACTION" }
     );
   }

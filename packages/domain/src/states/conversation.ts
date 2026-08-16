@@ -4,8 +4,6 @@ export type ConversationState =
   | "NEW"
   | "WAITING_FOR_CONSENT"
   | "WAITING_FOR_PHOTOS"
-  | "WAITING_FOR_PAYMENT"
-  | "ORDER_PAID"
   | "ANALYZING"
   | "WAITING_FOR_MORE_EVIDENCE"
   | "WAITING_FOR_HUMAN_REVIEW"
@@ -28,13 +26,13 @@ const GLOBAL_EXITS: ConversationState[] = ["OPTED_OUT", "BLOCKED", "ERROR"];
 // (section 12.1's own example message does this) rather than gating on a
 // separate YES reply, so there is no state where the conversation waits on
 // consent alone yet. WAITING_FOR_CONSENT remains reachable for when that gate
-// is built out.
+// is built out. The evidence check is free, so photos go straight to
+// ANALYZING once the required count is met - there is no payment gate between
+// photos and analysis.
 export const CONVERSATION_TRANSITIONS: Record<ConversationState, readonly ConversationState[]> = {
   NEW: ["WAITING_FOR_CONSENT", "WAITING_FOR_PHOTOS", ...GLOBAL_EXITS],
   WAITING_FOR_CONSENT: ["WAITING_FOR_PHOTOS", ...GLOBAL_EXITS],
-  WAITING_FOR_PHOTOS: ["WAITING_FOR_PAYMENT", ...GLOBAL_EXITS],
-  WAITING_FOR_PAYMENT: ["ORDER_PAID", ...GLOBAL_EXITS],
-  ORDER_PAID: ["ANALYZING", ...GLOBAL_EXITS],
+  WAITING_FOR_PHOTOS: ["ANALYZING", ...GLOBAL_EXITS],
   ANALYZING: [
     "WAITING_FOR_MORE_EVIDENCE",
     "WAITING_FOR_HUMAN_REVIEW",

@@ -5,6 +5,7 @@ const { dbMock } = vi.hoisted(() => ({
   dbMock: {
     item: { findUniqueOrThrow: vi.fn(), update: vi.fn() },
     listing: { create: vi.fn(), findMany: vi.fn(), findFirst: vi.fn(), update: vi.fn() },
+    contact: { findUniqueOrThrow: vi.fn(), update: vi.fn() },
     demandRequest: {
       create: vi.fn(),
       findUniqueOrThrow: vi.fn(),
@@ -18,14 +19,14 @@ const { dbMock } = vi.hoisted(() => ({
     },
     impactEvent: { create: vi.fn() },
     auditEvent: { create: vi.fn() },
-    outboxMessage: { upsert: vi.fn() },
+    outboxMessage: { upsert: vi.fn(), create: vi.fn() },
     $transaction: vi.fn(),
   },
 }));
 
 vi.mock("./client", () => ({ db: dbMock }));
 
-const { confirmHandoff, matchDemand, offerListingForPublishedItem } =
+const { confirmHandoff, matchDemand, offerListingForPublishedItem, handleMarketplaceCommand } =
   await import("./marketplaceFlow");
 
 const safePassport = {
@@ -58,7 +59,19 @@ beforeEach(() => {
   dbMock.match.update.mockResolvedValue({});
   dbMock.demandRequest.update.mockResolvedValue({});
   dbMock.impactEvent.create.mockResolvedValue({});
+  dbMock.outboxMessage.create.mockResolvedValue({});
+  dbMock.contact.update.mockResolvedValue({});
 });
+
+function connectDeps() {
+  return {
+    createConnectAccount: vi.fn().mockResolvedValue({ accountId: "acct_1" }),
+    createConnectOnboardingLink: vi
+      .fn()
+      .mockResolvedValue({ url: "https://connect.example.com/1" }),
+    appBaseUrl: "https://app.example.com",
+  };
+}
 
 describe("marketplace flow", () => {
   it("offers an eligible published item for seller approval", async () => {
@@ -188,5 +201,77 @@ describe("marketplace flow", () => {
       where: { id: "match_1" },
       data: { status: "COMPLETED" },
     });
+  });
+
+  it("APPROVE creates a Connect account and texts an onboarding link the first time", async () => {
+    dbMock.listing.findFirst.mockResolvedValue({
+      id: "listing_1",
+      itemId: "item_1",
+      status: "DRAFT",
+      item: {
+        id: "item_1",
+        status: "READY",
+        passport: { ...safePassport, publicSlug: "demo-item" },
+      },
+    });
+    dbMock.contact.findUniqueOrThrow.mockResolvedValue({
+      id: "seller_1",
+      stripeConnectAccountId: null,
+      stripeConnectOnboardedAt: null,
+    });
+    const deps = connectDeps();
+
+    const result = await handleMarketplaceCommand(
+      { contactId: "seller_1", rawText: "APPROVE", command: { type: "APPROVE" } },
+      deps,
+    );
+
+    expect(result).toEqual({ outcome: "LISTING_APPROVED", listingId: "listing_1" });
+    expect(deps.createConnectAccount).toHaveBeenCalledTimes(1);
+    expect(dbMock.contact.update).toHaveBeenCalledWith({
+      where: { id: "seller_1" },
+      data: { stripeConnectAccountId: "acct_1" },
+    });
+    expect(deps.createConnectOnboardingLink).toHaveBeenCalledWith({
+      accountId: "acct_1",
+      returnUrl: "https://app.example.com/item/demo-item",
+      refreshUrl: "https://app.example.com/item/demo-item",
+    });
+    expect(dbMock.outboxMessage.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          contactId: "seller_1",
+          payload: { text: expect.stringContaining("https://connect.example.com/1") },
+        }),
+      }),
+    );
+  });
+
+  it("APPROVE skips onboarding when the seller already has payouts set up", async () => {
+    dbMock.listing.findFirst.mockResolvedValue({
+      id: "listing_2",
+      itemId: "item_2",
+      status: "DRAFT",
+      item: {
+        id: "item_2",
+        status: "READY",
+        passport: { ...safePassport, publicSlug: "demo-item-2" },
+      },
+    });
+    dbMock.contact.findUniqueOrThrow.mockResolvedValue({
+      id: "seller_2",
+      stripeConnectAccountId: "acct_existing",
+      stripeConnectOnboardedAt: new Date("2026-08-15"),
+    });
+    const deps = connectDeps();
+
+    await handleMarketplaceCommand(
+      { contactId: "seller_2", rawText: "APPROVE", command: { type: "APPROVE" } },
+      deps,
+    );
+
+    expect(deps.createConnectAccount).not.toHaveBeenCalled();
+    expect(deps.createConnectOnboardingLink).not.toHaveBeenCalled();
+    expect(dbMock.outboxMessage.create).not.toHaveBeenCalled();
   });
 });

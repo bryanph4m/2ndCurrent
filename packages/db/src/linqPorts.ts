@@ -1,6 +1,6 @@
 import type { IntakePorts } from "@secondcurrent/domain";
 import type { Prisma } from "../generated/prisma/client";
-import { createItem } from "./repositories/itemRepository";
+import { createItem, transitionItem } from "./repositories/itemRepository";
 import { findOrCreateContact, recordOptOut } from "./repositories/contactRepository";
 import {
   createConversation,
@@ -10,7 +10,6 @@ import {
 import { recordInboundMessage } from "./repositories/messageRepository";
 import { attachMedia, countMediaForItem } from "./repositories/mediaRepository";
 import { enqueueOutboxMessage } from "./repositories/outboxRepository";
-import { createRecoveryCheckOrder, type CreateCheckout } from "./paymentFlow";
 import { handleMarketplaceCommand } from "./marketplaceFlow";
 
 export type DownloadAttachment = (url: string) => Promise<{ bytes: Buffer; mimeType: string }>;
@@ -31,7 +30,13 @@ export type LinqIntakePortsDeps = {
   downloadAttachment: DownloadAttachment;
   storePrivateObject: StorePrivateObject;
   normalizeAttachment: NormalizeAttachment;
-  createCheckout: CreateCheckout;
+  startAnalysisTask: (itemId: string) => Promise<void>;
+  createConnectAccount: () => Promise<{ accountId: string }>;
+  createConnectOnboardingLink: (input: {
+    accountId: string;
+    returnUrl: string;
+    refreshUrl: string;
+  }) => Promise<{ url: string }>;
   appBaseUrl: string;
 };
 
@@ -118,20 +123,19 @@ export function createLinqIntakePorts(deps: LinqIntakePortsDeps): IntakePorts {
       });
     },
 
-    async createRecoveryCheckOrder(input) {
-      const result = await createRecoveryCheckOrder(
-        {
-          contactId: input.contactId,
-          itemId: input.itemId,
-          appBaseUrl: deps.appBaseUrl,
-        },
-        deps.createCheckout,
-      );
-      return { checkoutUrl: result.checkoutUrl };
+    async enqueueItemAnalysis(input) {
+      // The evidence check is free: nothing waits on payment between photos
+      // and analysis, so this is the one place an item ever leaves INTAKE.
+      await transitionItem(input.itemId, "QUEUED", { type: "system" });
+      await deps.startAnalysisTask(input.itemId);
     },
 
     async handleMarketplaceCommand(input) {
-      await handleMarketplaceCommand(input);
+      await handleMarketplaceCommand(input, {
+        createConnectAccount: deps.createConnectAccount,
+        createConnectOnboardingLink: deps.createConnectOnboardingLink,
+        appBaseUrl: deps.appBaseUrl,
+      });
     },
 
     downloadAttachment: deps.downloadAttachment,

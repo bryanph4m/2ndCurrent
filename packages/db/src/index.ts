@@ -11,6 +11,7 @@ export * from "./repositories/webhookEventRepository";
 export * from "./repositories/passportRepository";
 export * from "./repositories/reviewStudyRepository";
 export * from "./repositories/reviewResponseRepository";
+export * from "./repositories/listingRepository";
 export {
   createLinqIntakePorts,
   type DownloadAttachment,
@@ -18,13 +19,6 @@ export {
   type LinqIntakePortsDeps,
 } from "./linqPorts";
 export { sendQueuedOutboxMessages, type OutboxSendText } from "./outboxSender";
-export {
-  createRecoveryCheckOrder,
-  markOrderPaidAndQueueAnalysis,
-  RECOVERY_CHECK_PRODUCT_CODE,
-  RECOVERY_CHECK_PRICE_CENTS,
-  type CreateCheckout,
-} from "./paymentFlow";
 export { runItemAnalysis, type AnalyzeImage, type AnalyzeItemFlowResult } from "./analyzeItemFlow";
 export { loadPriceCatalog } from "./priceCatalog";
 export {
@@ -54,6 +48,7 @@ export {
   confirmHandoff,
   handleMarketplaceCommand,
   type MarketplaceCommandResult,
+  type EnsureSellerPayoutAccountDeps,
 } from "./marketplaceFlow";
 export {
   createMeasurementStudy,
@@ -65,3 +60,10 @@ export {
   type JudgingDashboard,
 } from "./measurementFlow";
 export { seedDatabase } from "./seed";
+export {
+  createItemSaleCheckout,
+  markItemSaleCompleted,
+  commissionCentsFor,
+  ITEM_SALE_PRODUCT_CODE,
+  type CreateConnectCheckout,
+} from "./saleFlow";

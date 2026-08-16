@@ -3,6 +3,7 @@ import {
   createLinqIntakePorts,
   findWebhookEventById,
   sendQueuedOutboxMessages,
+  startTaskOnce,
 } from "@secondcurrent/db";
 import { processInboundLinqEvent, type IntakeOutcome } from "@secondcurrent/domain";
 import { normalizePrivateImage } from "@secondcurrent/integrations";
@@ -13,6 +14,19 @@ import {
   getObjectStorage,
   getPaymentProvider,
 } from "../runtime/providers.js";
+import { getTaskRunner } from "../runtime/tasks.js";
+
+function startAnalysisTask(itemId: string): Promise<void> {
+  return startTaskOnce(
+    {
+      taskName: "analyze-item",
+      itemId,
+      input: { itemId },
+      idempotencyKey: `analyze:${itemId}:1`,
+    },
+    (taskName, input, idempotencyKey) => getTaskRunner().start(taskName, input, idempotencyKey),
+  ).then(() => undefined);
+}
 
 // Section 17.1's real processWebhookTask: takes only {webhookEventId} (a
 // JSON-safe id, not the live verified-event object a web request already
@@ -45,7 +59,9 @@ export async function processStoredWebhook(webhookEventId: string): Promise<Inta
       getObjectStorage()
         .putPrivateObject(input)
         .then(() => undefined),
-    createCheckout: (input) => getPaymentProvider().createCheckout(input),
+    startAnalysisTask,
+    createConnectAccount: () => getPaymentProvider().createConnectAccount(),
+    createConnectOnboardingLink: (input) => getPaymentProvider().createConnectOnboardingLink(input),
     appBaseUrl: getAppBaseUrl(),
   });
 

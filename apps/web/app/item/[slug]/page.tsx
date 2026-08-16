@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
-import { findPublishedPassportBySlug } from "@secondcurrent/db";
+import { findActiveListingByItemSlug, findPublishedPassportBySlug } from "@secondcurrent/db";
+import { BuyButton } from "@/components/BuyButton";
 import { ProductGlyph } from "@/components/ProductGlyph";
 import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
 
@@ -36,6 +37,7 @@ export default async function PassportPage({ params }: { params: Promise<{ slug:
   if (!passport) {
     notFound();
   }
+  const listing = await findActiveListingByItemSlug(slug);
 
   const knownFacts = passport.knownFacts as string[];
   const unknownFacts = passport.unknownFacts as string[];
@@ -86,6 +88,21 @@ export default async function PassportPage({ params }: { params: Promise<{ slug:
               This page separates confirmed evidence from open questions so the next person can make
               a safer decision.
             </p>
+            {listing && (
+              <div className="suggested-price" style={{ position: "static", marginTop: 20 }}>
+                <small>Listed price</small>
+                <b>${(listing.priceCents / 100).toFixed(2)}</b>
+                {listing.purchasable ? (
+                  <div style={{ marginTop: 14 }}>
+                    <BuyButton slug={slug} className="button button-primary button-large" />
+                  </div>
+                ) : (
+                  <p className="empty-state" style={{ marginTop: 10, marginBottom: 0 }}>
+                    Not yet available to buy.
+                  </p>
+                )}
+              </div>
+            )}
           </div>
         </section>
 

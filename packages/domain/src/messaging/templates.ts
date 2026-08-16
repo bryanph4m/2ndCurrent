@@ -15,10 +15,8 @@ export const CONSENT_AND_PHOTO_INSTRUCTIONS_TEXT = [
   "",
   "Use good lighting and send one item per photo. Do not include private messages, account screens, or personal documents in the photos.",
   "",
-  "After we get all three, we will text a link to pay for the check.",
+  "After we get all three, we will text you what we find.",
 ].join("\n");
-
-export const CHECKOUT_LINK_PREFIX = "We received your photos. Pay for the item check here: ";
 
 const PHOTO_LABEL_TEXT: Partial<Record<MediaLabel, string>> = {
   FULL_ITEM: "the full item",
@@ -43,7 +41,6 @@ export const ITEM_ALREADY_IN_PROGRESS_TEXT =
 export const OPT_OUT_CONFIRMATION_TEXT =
   "You will no longer receive texts from us. Reply SELL to start again.";
 
-export const PAYMENT_RECEIVED_TEXT = "Payment received. We are checking your item now.";
 export const ANALYSIS_STARTED_TEXT = "We are checking the item photos now.";
 export const HUMAN_REVIEW_STARTED_TEXT =
   "The item needs a closer look. We will text you when the check is ready.";
@@ -51,6 +48,7 @@ export const RESULT_READY_PREFIX = "Your item check is ready: ";
 export const LISTING_APPROVAL_TEXT =
   "Your item record is ready to list locally. Reply APPROVE to list it, or DECLINE to keep it private.";
 export const LISTING_APPROVED_TEXT = "Your item is now available for a local match.";
+export const PAYOUT_ONBOARDING_PREFIX = "Set up payouts so you get paid when this sells: ";
 export const LISTING_DECLINED_TEXT = "The item will stay private and will not be matched.";
 export const BUYER_MATCH_PREFIX = "Local match found";
 export const HANDOFF_CODE_PREFIX = "Use this handoff code when the item changes hands";
